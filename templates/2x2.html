@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='2x2.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <ul>
+                {% for skill in skills %}
+                <li>
+                    <div class="draggable ui-widget-content">
+                        {{skill.skill_name}}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-9">
+            
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 import csv
 
 def get_user_list(filename='../Data/user.csv'):
+    """return list of user tuple. e.g. ('001,', 'demo1'), ('002,', 'demo2')]"""
     user_list = []
     with open(filename, 'rb') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
