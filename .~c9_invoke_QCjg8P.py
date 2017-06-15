@@ -103,7 +103,7 @@ def getDataFromSubmit():
     if flask.request.method == 'GET':
         return flask.render_template('test.html')
     dic = flask.request.json['total']
-    user = dic['user_id']
+    pri
     survey = dic['survey_id']
     canvas = dic['canvas_data']
     # print(canvas)

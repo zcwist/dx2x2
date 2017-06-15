@@ -102,7 +102,7 @@ def unauthorized_handler():
 def getDataFromSubmit():
     if flask.request.method == 'GET':
         return flask.render_template('test.html')
-    dic = flask.request.json['total']
+    print("")
     user = dic['user_id']
     survey = dic['survey_id']
     canvas = dic['canvas_data']

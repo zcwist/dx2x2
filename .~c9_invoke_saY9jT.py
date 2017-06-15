@@ -106,7 +106,7 @@ def getDataFromSubmit():
     user = dic['user_id']
     survey = dic['survey_id']
     canvas = dic['canvas_data']
-    # print(canvas)
+    print(canvas)
     setCanvasData(user, survey, canvas)
     print("successfully set canvasData")
     

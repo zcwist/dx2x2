@@ -101,7 +101,7 @@ def unauthorized_handler():
 @app.route('/kaiyue/test',methods=['GET','POST'])
 def getDataFromSubmit():
     if flask.request.method == 'GET':
-        return flask.render_template('test.html')
+    print(dic)
     dic = flask.request.json['total']
     user = dic['user_id']
     survey = dic['survey_id']

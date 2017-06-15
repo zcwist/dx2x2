@@ -70,9 +70,31 @@ def checkSurveyStatus(survey_id):
         return survey.isOpen
     except Exception as e:
         return None;
-# def getCanvasEntry(survey_id, user_id):
-#     try:
-#         cooridnates = session.query(Canvas).filter(Canvas.)
+
+def setCanvasData(user, survey, coor):
+    try:
+        currentData = session.query(Canvas).filter(Canvas.user_id == user and Canvas.class_id == survey).one()
+        #add in new Entry if it is Empty
+        
+        currentData.coordinates = coor
+        session.add(currentData)
+        session.commit()
+    except Exception as e:
+        newStudentEntry = Canvas(user_id = user, class_id = survey, coordinates = coor)
+        session.add(newStudentEntry)
+        session.commit()
+        
+def getCanvasCoordinates(user, survey):
+        try:
+            currentData = session.query(Canvas).filter(Canvas.user_id == user and Canvas.class_id == survey).one()
+            return currentData.coordinates
+        except Exception as e:
+            return None
+
+def getCanvasEntry(survey_id, user_id):
+    return """{u'canvas_data': {u'skill_no_pos': [u'1', u'2', u'3', u'4', u'5', u'6', u'7', u'8', u'9', u'10', u'12', u'13', u'14', u'15', u'16', u'17', u'18', u'19', u'20', u'21', u'22', u'23', u'24', u'25', u'26', u'27', u'28', u'29', u'30', u'31', u'32', u'33', u'34'], u'canvas_size': {u'width': 838, u'height': 475}, u'skills_pos': {u'11': {u'top': 141, u'left': 132.5}}}, u'survey_id': u'1', u'user_id': u'001'}"""
+#     # try:
+#     #     cooridnates = session.query(Canvas).filter(Canvas.)
 if __name__ == "__main__":
     surveyID = get_survey_id("T1")
     print(surveyID)

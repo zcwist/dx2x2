@@ -1,6 +1,8 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+# import sqlalchemy
+import datetime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.types import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import Boolean
@@ -63,7 +65,7 @@ class Canvas(Base):
     user_id = Column(String(80), ForeignKey('userdata.user_id'))
     class_id = Column(Integer, ForeignKey('survey.id') )
     version = Column(Integer, default=1)
-    date = Column(DateTime)
+    date = Column(DateTime, default=datetime.datetime.utcnow)
     coordinates = Column(JSON)
     
     
@@ -71,10 +73,10 @@ class Canvas(Base):
     survy = relationship(Survey)
     
 
-
-Str = 'mysql://kaiyuewang:wangkaiyue94@testdb.c7rdqxze62rp.us-east-1.rds.amazonaws.com:3306/testdb'
-engine = create_engine(Str)
-
-# engine = create_engine('sqlite:///OurDataBase.db')
-
-Base.metadata.create_all(engine)
+if __name__ == "__main__":
+    Str = 'mysql://kaiyuewang:wangkaiyue94@testdb.c7rdqxze62rp.us-east-1.rds.amazonaws.com:3306/testdb'
+    engine = create_engine(Str)
+    
+    # engine = create_engine('sqlite:///OurDataBase.db')
+    
+    Base.metadata.create_all(engine)
