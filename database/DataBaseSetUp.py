@@ -1,6 +1,7 @@
 import os
 import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.types import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import Boolean
 from sqlalchemy.orm import relationship
@@ -61,8 +62,10 @@ class Canvas(Base):
     id = Column(Integer, primary_key = True)
     user_id = Column(String(80), ForeignKey('userdata.user_id'))
     class_id = Column(Integer, ForeignKey('survey.id') )
-    x_axis = Column(Integer)
-    y_axis = Column(Integer)
+    version = Column(Integer, default=1)
+    date = Column(DateTime)
+    coordinates = Column(JSON)
+    
     
     userdata = relationship(User)
     survy = relationship(Survey)

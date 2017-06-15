@@ -70,10 +70,12 @@ def checkSurveyStatus(survey_id):
         return survey.isOpen
     except Exception as e:
         return None;
-
+# def getCanvasEntry(survey_id, user_id):
+#     try:
+#         cooridnates = session.query(Canvas).filter(Canvas.)
 if __name__ == "__main__":
     surveyID = get_survey_id("T1")
     print(surveyID)
     
     
-    print(checkSurveyStatus(1));
+    print(get_skill_list(surveyID));
