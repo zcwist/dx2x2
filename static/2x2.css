@@ -1,0 +1,12 @@
+div.skillname: hover + div.skilldescrip{
+    display: block;
+}
+
+div.skilldescrip{
+    padding:20px;
+    /*display:none;*/
+}
+
+.ghost {
+     opacity: .5;
+ }

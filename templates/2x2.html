@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+  <link href="{{url_for('static',filename='2x2.css')}}" rel="stylesheet">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="{{url_for('static',filename='2x2.js')}}"></script>
 {% endblock %}
@@ -8,19 +9,25 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <ul>
-                {% for skill in skills %}
-                <li>
-                    <div class="draggable ui-widget-content">
-                        {{skill.skill_name}}
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-md-9">
+        <div class="col-md-3 skills" style="overflow-y: scroll; max-height: 500px">
             
+            <!--{% for skill in skills %}-->
+            <!--<row class="row">-->
+            <!--    <div class="skillname ui-widget-content">-->
+            <!--        {{skill.skill_name}}-->
+            <!--    </div>-->
+            <!--    <div class="skilldescrip">-->
+            <!--        {{skill.skill_descrip}}-->
+            <!--    </div>-->
+            <!--</row>-->
+            <!--{% endfor %}-->
+        
+        </div>
+        <div class="col-md-8" id="2x2canvas" style="height: 500px">
+            
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-default" id="save">Submit</button>
         </div>
     </div>
     

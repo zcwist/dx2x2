@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JQuery Tutorial</title>
+
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+  <!-- Add the JQuery UI CSS -->
+  <!--<link href="{{url_for('static',filename='jquery-ui.min.css')}}" rel="stylesheet">-->
+
+  <!-- Add the JQuery UI JS file -->
+  <!--<script src ="https://code.jquery.com/jquery-2.2.4.min.js" > </script>-->
+  
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+  <body>
+    <div id="wrapper">
+      <div class="row">
+        <div id = "listPiles" class="col-md-3">
+  
+        <div id = "D1", class="draggable ui-widget-content">
+            test1
+        </div>
+   
+        <div id = "D2" class="draggable ui-widget-content">
+            test2
+        </div>
+   
+        <div id = "D3" class="draggable ui-widget-content">
+            test3
+        </div>
+    
+
+    </div>
+        </div>
+        <div id="col-md-9" class="droppable">
+            
+        </div>
+
+
+
+    <button type="button" id="submit">Click Me!</button>
+        </div>
+
+    <script type="text/javascript">
+    
+    var dict = {}
+    $(document).ready(function() {
+         $(".draggable").draggable({
+
+            drag: function(e, ui){
+              var offset = $(this).offset();
+              var xPos = offset.left;
+              var yPos = offset.top;
+              var id = ui.helper.attr("id")
+              console.log(id);
+              console.log(xPos);
+              console.log(yPos);
+              $('#posX').text('x: ' + xPos);
+              $('#posY').text('y: ' + yPos);
+              var curTuple = {"xPos":xPos, "yPos":yPos};
+              dict[id] = curTuple;
+
+            }          
+         });
+
+         $("#submit").click(function(){
+            console.log(JSON.stringify(dict));
+            $.ajax({
+              type:"POST",
+              url: "/kaiyue/test",
+              data: JSON.stringify({"total":dict}),
+              // data: {"total":dict},
+              dataType: "json",
+              contentType: 'application/json;charset=UTF-8',
+
+
+              success: function(){
+                console.log("data sent");
+              }
+
+            })
+            
+            
+         })
+
+    })
+    </script>
+    </div> <!-- End of Wrapper -->
+
+    </body>
+</html>

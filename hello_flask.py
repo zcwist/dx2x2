@@ -63,9 +63,14 @@ def protected(survey_id):
         return "Bad survey"
    
     skills = get_skill_list(survey_id)
-    return flask.render_template('2x2.html',skills=skills)
+    # return flask.render_template('2x2.html',skills=skills)
+    return flask.render_template('2x2.html')
     
-    return 'Logged in as: ' + flask_login.current_user.id + " at class:" + survey_id
+    # return 'Logged in as: ' + flask_login.current_user.id + " at class:" + survey_id
+@app.route('/skills/<survey_id>')
+def getskills(survey_id):
+    skills = get_skill_list(survey_id)
+    return flask.jsonify(skills);
 
 @app.route('/logout')
 def logout():
@@ -76,5 +81,13 @@ def logout():
 def unauthorized_handler():
     return 'Unauthorized'
 
-
+@app.route('/kaiyue/test',methods=['GET','POST'])
+def getDataFromSubmit():
+    if flask.request.method == 'GET':
+        return flask.render_template('test.html')
+    dic = flask.request.json['total']
+    print(str(dic))
+    return flask.json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        
+  
 app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
