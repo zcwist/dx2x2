@@ -15,11 +15,18 @@ $(document).ready(function(){
     
     $.getJSON("/skills/1",function(result){
         $.each(result,function(i, field){
-            $('.skills').append('<div class="row skill" id="'+field.id+'">'+
-            field.skill_name +
+            $('.skills').append(
+                '<div class="row skill group" id="'+field.id+'">'+
+            '<h5>' + field.skill_name + '</h5>' +
+            '<div>' + field.skill_descrip +'</div>' +
             "</div>")
         });
-        
+        $(".skills").accordion({
+            animate: 300,
+            collapsible: true,
+            header: "> div > h5"
+            
+        })
         $(".skill").draggable({
             helper: function(event){
                 var ret = $(this).clone();
@@ -72,14 +79,15 @@ $(document).ready(function(){
                         
                         //reload canvas
                         skill_in_canvas = $(".skill#"+skill_id).clone();
+                        skill_in_canvas.accordion({active:false});
                         skill_in_canvas.removeClass("skill");
                         skill_in_canvas.toggleClass("ghost");
                         skill_in_canvas.addClass("skill_in_canvas");
                         skill_in_canvas.draggable({
                             containment: "parent"
                         });
+                        
                         original_canvas_size = canvas_data.canvas_size;
-                        console.log(original_canvas_size);
                         new_canvas_size = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
                         width_coff=new_canvas_size.width/original_canvas_size.width;
                         height_coff=new_canvas_size.height/original_canvas_size.height;
@@ -107,6 +115,7 @@ $(document).ready(function(){
         drop:function(event,ui){
             if (ui.draggable.hasClass('skill')){
                 var dropped = ui.draggable.clone();
+                $(dropped).accordion({active:false});
                 $(dropped).toggleClass("ghost");
                 $(dropped).removeClass("skill");
                 $(dropped).addClass("skill_in_canvas");
