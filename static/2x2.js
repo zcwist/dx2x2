@@ -56,11 +56,8 @@ $(document).ready(function(){
         $(".skill").click(function () {
             if ($(this).hasClass("ghost")){
                 id = $(this).attr("id");
-                console.log(".skill_in_canvas#"+id);
-                // skill_in_canvas = $(".skill_in_canvas#"+id);
-                // console.log(skill_in_canvas);
-                // skill_in_canvas.toggle("ghost");
-                $(".skill_in_canvas#"+id).remove();
+                skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
+                skill_in_canvas.effect("highlight",{},2000);
             }
         })
         
