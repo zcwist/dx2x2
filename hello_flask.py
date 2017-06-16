@@ -82,7 +82,10 @@ def protected(survey_id):
 def getskills(survey_id):
     skills = get_skill_list(survey_id)
     return flask.jsonify(skills)
-
+@app.route('/template/<survey_id>')
+def gettemplate(survey_id):
+    template = get_survey_template(survey_id)
+    return flask.jsonify(template)
 @app.route('/logout')
 def logout():
     flask_login.logout_user()

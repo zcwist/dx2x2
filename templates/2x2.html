@@ -2,8 +2,11 @@
 
 {% block head %}
   <link href="{{url_for('static',filename='2x2.css')}}" rel="stylesheet">
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="{{url_for('static',filename='2x2.js')}}"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
+
 {% endblock %}
 
 {% block body %}
@@ -20,15 +23,46 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <form class="navbar-form navbar-right" action="/logout">
-        <button class="btn btn-success" id="signout">Sign out</button>
+        <button class="btn btn-default" id="signout">Sign out</button>
       </form>
     </div><!--/.navbar-collapse -->
   </div>
 </nav>
 
 <div class="container" style="margin-top: 20px;">
+  <div class="row">
+    <div class="col-md-7">
+      <h4>Instuction</h4>
+      <ul>
+        <li>Click skill for toggling description.</li>
+        <li>Drag skill to 2x2 canvas.</li>
+        <li>Double click skill in canvas to reset it.</li>
+        <li>Submit when you finished. Don't worry, we will take you back when you revisit.</li>
+      </ul>
+    </div>
+    
+    <!--format the submit and reset buttons-->
+    <div> 
+      <div class="col-md-1 col-md-offset-3">  </br></br></br>  </div>
+      
+    <div class="col-md-1 col-md-offset-3">
+            <button class="btn btn-success" id="save">Submit</button>
+    </div>
+     <div class="col-md-1">
+    <button id="reset" class="btn btn-danger"> Reset </button>
+      </div>
+    </div>
+    
+    
+  </div>
+  <div class="row">
+
+    
+
+
+  </div>
     <div class="row" id="mainpanel">
-        <div class="col-md-3 skills" id="skills" style="overflow-y: scroll">
+        <div class="col-md-3 skills" id="skills" style="overflow-y: scroll;overflow-x: hidden">
             
             <!--{% for skill in skills %}-->
             <!--<row class="row">-->
@@ -50,9 +84,7 @@
         
     </div>
     <div class="row">
-        <div class="col-md-1 col-md-offset-11">
-            <button class="btn btn-default" id="save">Submit</button>
-        </div>
+        
     </div>
     
 </div>

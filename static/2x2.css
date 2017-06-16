@@ -1,15 +1,30 @@
 .ghost {
      opacity: .5;
 }
-
+.skill {
+    cursor: pointer;
+}
 .skill_in_canvas {
+    cursor: pointer;
     border-color: lightgrey;
     border-width: 1px;
     border-style: solid;
+    background: rgba(255, 255, 255, .5);
 }
- 
+
+.ui-accordion-header{
+   /*background:black;*/
+}
+/*.ui-widget-header{*/
+/*    background:rgba(255,255,255,0.7);*/
+/*}*/
+.ui-state-active.dx{
+    background:rgba(255,255,255,0.7);
+    border:1px solid #cccccc;
+    color:#1c94c4;
+}
 body {
-  padding-top: 80px;
+  padding-top: 40px;
   padding-bottom: 20px;
 }
  
