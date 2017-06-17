@@ -1,7 +1,7 @@
 import ConfigParser
 
 configParser = ConfigParser.RawConfigParser()   
-configFilePath = '.config'
+configFilePath = 'database/.config'
 configParser.read(configFilePath)
 
 def getDBStr():
