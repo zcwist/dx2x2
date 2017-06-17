@@ -74,7 +74,8 @@ class Canvas(Base):
     
 
 if __name__ == "__main__":
-    Str = 'mysql://kaiyuewang:wangkaiyue94@testdb.c7rdqxze62rp.us-east-1.rds.amazonaws.com:3306/testdb'
+    import config
+    Str = config.getDBStr()
     engine = create_engine(Str)
     
     # engine = create_engine('sqlite:///OurDataBase.db')

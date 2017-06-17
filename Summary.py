@@ -26,21 +26,23 @@ def Summary(survey):
         
         width = coor["canvas_size"]["width"]
         height = coor["canvas_size"]["height"]
-        print(height,width)
+        # print(height,width)
         for skill in skillList:
             skillID = skill.id
             try:
                 curCoordinate = coor["skills_pos"][str(skillID)]
                 top = curCoordinate["top"]
                 left = curCoordinate["left"]
-                print(top,left)
+                # print(top,left)
                 y_score = float(height - top) / height* 20 - 10
                 x_score = float(left) / width * 20 - 10
                 
+                print(skillID)
                 if skillID in xdict.keys():
                     xdict[skillID] = [x_score]
                 else:
                     xdict[skillID].append(x_score)
+                print(xdict)
                     
                     
                 if skillID in ydict.keys():
@@ -50,10 +52,10 @@ def Summary(survey):
                     
             except Exception as e:
                 continue
+        print(xdict)
                 
             
-            
-            
+
             
 
 

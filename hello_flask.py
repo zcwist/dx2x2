@@ -132,6 +132,15 @@ def loadcanvas():
         return flask.jsonify(surveyed=False)
     else:
         return flask.jsonify(surveyed=True, canvas_data=canvas_data)
+        
+
+@app.route('/demo')
+def showdemo():
+    user = DXUser()
+    user.id = "001"
+    flask_login.login_user(user);
+    return flask.render_template('2x2.html',survey_id=1)
+    
     
     
     

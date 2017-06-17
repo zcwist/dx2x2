@@ -3,8 +3,8 @@ from sqlalchemy.orm import sessionmaker
 from DataBaseSetUp import User, Base, Survey,Skill_Entry,AxisTemplate,Canvas,Skill_List_Manager
 
 # engine = create_engine('sqlite:///OurDataBase.db')
-
-Str = 'mysql://kaiyuewang:wangkaiyue94@testdb.c7rdqxze62rp.us-east-1.rds.amazonaws.com:3306/testdb'
+import config
+Str = config.getDBStr()
 engine = create_engine(Str)
 
 DBSession = sessionmaker(bind = engine)
