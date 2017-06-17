@@ -1,12 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database.DBAccess import get_user_name
 from database.DataBaseSetUp import User, Base, Survey, Skill_Entry, AxisTemplate, Canvas, Skill_List_Manager
-import pandas as pd
+from database.DBAccess import get_user_name
 
-# engine = create_engine('sqlite:///OurDataBase.db')
+import csv
 
-Str = 'mysql://kaiyuewang:wangkaiyue94@testdb.c7rdqxze62rp.us-east-1.rds.amazonaws.com:3306/testdb'
+import database.config as config
+Str = config.getDBStr()
 engine = create_engine(Str)
 
 DBSession = sessionmaker(bind=engine)
@@ -18,10 +18,13 @@ session = DBSession()
 
 
 def Summary(survey):
+    xrowList = []
+    yrowList = []
     ColumnNameList = ["Name"] # First column in the output csv is "Name"
     user_list = [] #list of user
     xdict = {}  # x direction values stored in here
     ydict = {}  # y direction values stored in here
+
     targetSurvey = session.query(Survey).filter(Survey.id == survey).one()  # retrieve the survey by survey_id
     list_id = targetSurvey.skill_list_id
     skillList = session.query(Skill_Entry).filter(
@@ -35,7 +38,8 @@ def Summary(survey):
         print("You are currently using data from user:" + data.user_id)
         cur_user_name = get_user_name(data.user_id)
         user_list.append(cur_user_name)
-
+        xcurRow = {"Name":cur_user_name} #add to x eachRow
+        ycurRow = {"Name":cur_user_name} #add to x eachRow
         coor = data.coordinates
         # Get the height and width of the frame
         width = coor["canvas_size"]["width"]
@@ -56,36 +60,37 @@ def Summary(survey):
                 y_score = float(height - top) / height * 20 - 10
                 x_score = float(left) / width * 20 - 10
 
-                if skillName not in xdict.keys():
-                    xdict[skillName] = [x_score]
-                else:
-                    xdict[skillName].append(x_score)
+                if skillName not in xcurRow.keys():
+                    xcurRow[skillName] = x_score
 
-                if skillName not in ydict.keys():
-                    ydict[skillName] = [y_score]
-                else:
-                    ydict[skillName].append(y_score)
+
+                if skillName not in ycurRow.keys():
+                    ycurRow[skillName] = y_score
 
             except Exception as e:
-                if skillName not in xdict.keys():
-                    xdict[skillName] = ["NA"]
-                else:
-                    xdict[skillName].append("NA")
+                if skillName not in xcurRow.keys():
+                    xcurRow[skillName] = "NA"
 
-                if skillName not in ydict.keys():
-                    ydict[skillName] = ["NA"]
-                else:
-                    ydict[skillName].append("NA")
+                if skillName not in ycurRow.keys():
+                    ycurRow[skillName] = "NA"
+        xrowList.append(xcurRow)
+        yrowList.append(ycurRow)
 
-    xdict["Name"] = user_list
-    ydict["Name"] = user_list
-    
-    ## write our to csv file
-    df = pd.DataFrame(xdict, columns=ColumnNameList)
-    df.to_csv('x_direction_summary.csv')
-    tf = pd.DataFrame(ydict, columns=ColumnNameList)
-    tf.to_csv('y_direction_summary.csv')
+    with open('x_summary.csv', 'w') as csvfile:
+        fieldnames = ColumnNameList
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for row in xrowList:
+            writer.writerow(row)
+
+    with open('y_summary.csv', 'w') as csvfile:
+        fieldnames = ColumnNameList
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for row in yrowList:
+            writer.writerow(row)
 
 
-if __name__ == "__main__":
-    Summary(1)
+Summary(1)
