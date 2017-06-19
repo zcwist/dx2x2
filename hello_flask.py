@@ -33,7 +33,10 @@ def request_loader(request):
     
 @app.route('/', methods=['GET'])
 def index():
-    return flask.redirect(flask.url_for('login'))
+    user = DXUser()
+    user.id = "001"
+    flask_login.login_user(user);
+    return flask.render_template('2x2.html',survey_id=1)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
