@@ -63,6 +63,11 @@ def login():
     flask.flash('Bad login')
     return flask.redirect(flask.url_for('login')) 
 
+@app.route('/compare/<survey_id>/<pre_survey_id>')
+def compare(survey_id,pre_survey_id):
+    # print ("here")
+    return "hello world"
+
 @app.route('/protected/<survey_id>')
 @flask_login.login_required
 def protected(survey_id):

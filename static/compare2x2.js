@@ -5,6 +5,7 @@ $(document).ready(function(){
     //     console.log("hello world")
     // }
     var survey_id = $("#survey_id").text();
+    var pre_survey_id = $("#pre_survey_id").text();
 
     var scale = 0.7;
     $("#canvasgrid").height(function(){
@@ -14,6 +15,195 @@ $(document).ready(function(){
         return scale*$(document).height();
     });
     
+    
+    function skill_in_canvas_render(skill,position){
+        skill.accordion({active:false, icons: null});
+        skill.accordion({active:false, icons: null});
+        // $(dropped+">h5").removeClass("ui-state-active");
+        skill.toggleClass("ghost");
+        skill.removeClass("skill");
+        
+        skill.addClass("skill_in_canvas");
+        skill.detach().css({'position':'absolute', 'top':position.top,'left':position.left}).append("#dxcanvas");
+        skill.draggable({
+            containment: "parent"
+            });
+        skill.children("h5").addClass("dx");
+        
+        // close icon
+        // $(dropped+">h5").addClass("dx");
+        // console.log("<div style='float:right' id='"+$(this).attr(id)+"'><sup>&nbsp x</s</div>");
+        
+        // $(dropped).prepend("<div style='float:right' class='cl' id='"+$(dropped).attr("id")+"'><sup>&nbsp x</s</div>")
+
+        // $(".cl#"+$(dropped).attr("id")).click(function(){
+        //     skill_id = $(this).attr("id");
+        //     console.log("close"+skill_id);
+        //     $(".skill#"+skill_id).toggleClass("ghost");
+        //     $(this).parent().remove();
+        // })
+        
+        skill.children("h5").removeClass("ui-accordion-header");
+        //Return for long skill name
+            var skill_text = skill.children("h5").text().split(" ");
+            skill.children("h5").empty();
+            var i;
+            for (i = 0; i < Math.ceil(skill_text.length/2); i++){
+                skill.children("h5").append(skill_text[i]);
+                if (i<Math.ceil(skill_text.length/2)-1){
+                    skill.children("h5").append(" ");
+                }
+            }
+            skill.children("h5").append("<br>");
+            for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
+                skill.children("h5").append(skill_text[i]);
+                if (i<Math.ceil(skill_text.length)-1){
+                    skill.children("h5").append(" ");
+                }
+            }
+        
+        
+        console.log(skill_text.length);
+        skill.dblclick(function(){
+            // console.log($(this).attr("id"));
+            
+            var skill_id = $(this).attr("id");
+            // console.log($(".skill#"+skill_id));
+            $(".skill#"+skill_id).toggleClass("ghost");
+            $(".skill#"+skill_id).draggable("enable");
+            this.remove();
+        });
+        
+        return skill;
+        
+    }
+    
+    //reset button
+    $("#reset").click(function() {
+        console.log("reset button clicked");
+        $(".skill_in_canvas").each(function(index) {
+            // console.log("in the loop")
+
+            var skill_id = $(this).attr("id");
+            // console.log($(".skill#"+skill_id));
+            $(".skill#"+skill_id).toggleClass("ghost");
+            $(".skill#"+skill_id).draggable("enable");
+            this.remove();
+        });
+    });
+    // add the sign out function
+    $('#exit').attr('href', '/login');
+    //end modificaition
+    
+    $("#save").click(function(){
+        var dict = {};
+        dict["survey_id"] = survey_id;
+        var canvas_data = {};
+        canvas_data["canvas_size"] = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
+        var skills_pos = {};
+        $(".skill_in_canvas").each(function(index){
+            // console.log($(this).attr("id"));
+            // console.log($(this).position());
+            skills_pos[$(this).attr("id")] = $(this).position();
+            //normalize coordinates
+        });
+        canvas_data["skills_pos"]=skills_pos;
+        
+        var skill_no_pos = [];
+        
+        $(".skill").not(".ghost").each(function(index){
+            skill_no_pos.push($(this).attr("id"));
+        });
+        canvas_data["skill_no_pos"] = skill_no_pos;
+
+        dict["canvas_data"] = canvas_data;
+        
+        $.getJSON("/userinfo",function(result) {
+            dict["user_id"] = result;
+            $.ajax({
+              type:"POST",
+              url: "/kaiyue/test",
+              data: JSON.stringify({"total":dict}),
+              // data: {"total":dict},
+              dataType: "json",
+              contentType: 'application/json;charset=UTF-8',
+
+              success: function(){
+                  alert("Great! 2x2 canvas saved!");
+              }
+
+            });
+        });
+    });
+    
+    function drawCanvas(){
+        var canvas = $("#myCanvas");
+        var width = canvas.parent().width();
+        var height = canvas.parent().height();
+        // console.log(height);
+        canvas = document.getElementById("myCanvas");
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext("2d");
+        ctx.lineWidth=2;
+        ctx.moveTo(0.05*width,height/2);
+        ctx.lineTo(0.95*width,height/2);
+        ctx.moveTo(width/2,0.05*height);
+        ctx.lineTo(width/2,0.95*height);
+        ctx.stroke();
+        
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(0.05*width,height/2);
+        ctx.lineTo(0.05*width+20,height/2-6);
+        ctx.lineTo(0.05*width+20,height/2+6);
+        ctx.fill();
+        
+        ctx.moveTo(0.95*width,height/2);
+        ctx.lineTo(0.95*width-20,height/2-6);
+        ctx.lineTo(0.95*width-20,height/2+6);
+        ctx.fill();
+        
+        ctx.moveTo(width/2,0.05*height);
+        ctx.lineTo(width/2-6,0.05*height+20);
+        ctx.lineTo(width/2+6,0.05*height+20);
+        ctx.fill();
+        
+        ctx.moveTo(width/2,0.95*height);
+        ctx.lineTo(width/2-6,0.95*height-20);
+        ctx.lineTo(width/2+6,0.95*height-20);
+        ctx.fill();
+        
+        function drawTemplate(ctx) {
+            $.getJSON("/template/"+survey_id, function(result){
+            // console.log(result)
+    
+            var tp = result.top;
+            var bot = result.bottom;
+            var left = result.left;
+            var right = result.right;
+    
+            
+            ctx.font="12px Comic Sans MS";
+            ctx.textAlign="left"; 
+            ctx.fillText(left,0.05*width + 24,height/2 + 12);
+            ctx.textAlign="right"; 
+            ctx.fillText(right,0.95*width - 24 ,height/2 + 12);
+            ctx.textAlign="center";
+            ctx.fillText(tp, width/2, 0.05*height - 12);
+            ctx.textAlign="center";
+            ctx.fillText(bot, width/2, 0.95*height + 12);
+        
+            });
+       
+        }
+        
+        drawTemplate(ctx);
+    }
+    drawCanvas();
+    
+    
+    // loading data
     $.getJSON("/skills/"+survey_id,function(result){
         $.each(result,function(i, field){
             $('.skills').append(
@@ -210,191 +400,4 @@ $(document).ready(function(){
             }
         }
     });
-    
-    function skill_in_canvas_render(skill,position){
-        skill.accordion({active:false, icons: null});
-        skill.accordion({active:false, icons: null});
-        // $(dropped+">h5").removeClass("ui-state-active");
-        skill.toggleClass("ghost");
-        skill.removeClass("skill");
-        
-        skill.addClass("skill_in_canvas");
-        skill.detach().css({'position':'absolute', 'top':position.top,'left':position.left}).append("#dxcanvas");
-        skill.draggable({
-            containment: "parent"
-            });
-        skill.children("h5").addClass("dx");
-        
-        // close icon
-        // $(dropped+">h5").addClass("dx");
-        // console.log("<div style='float:right' id='"+$(this).attr(id)+"'><sup>&nbsp x</s</div>");
-        
-        // $(dropped).prepend("<div style='float:right' class='cl' id='"+$(dropped).attr("id")+"'><sup>&nbsp x</s</div>")
-
-        // $(".cl#"+$(dropped).attr("id")).click(function(){
-        //     skill_id = $(this).attr("id");
-        //     console.log("close"+skill_id);
-        //     $(".skill#"+skill_id).toggleClass("ghost");
-        //     $(this).parent().remove();
-        // })
-        
-        skill.children("h5").removeClass("ui-accordion-header");
-        //Return for long skill name
-            var skill_text = skill.children("h5").text().split(" ");
-            skill.children("h5").empty();
-            var i;
-            for (i = 0; i < Math.ceil(skill_text.length/2); i++){
-                skill.children("h5").append(skill_text[i]);
-                if (i<Math.ceil(skill_text.length/2)-1){
-                    skill.children("h5").append(" ");
-                }
-            }
-            skill.children("h5").append("<br>");
-            for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
-                skill.children("h5").append(skill_text[i]);
-                if (i<Math.ceil(skill_text.length)-1){
-                    skill.children("h5").append(" ");
-                }
-            }
-        
-        
-        console.log(skill_text.length);
-        skill.dblclick(function(){
-            // console.log($(this).attr("id"));
-            
-            var skill_id = $(this).attr("id");
-            // console.log($(".skill#"+skill_id));
-            $(".skill#"+skill_id).toggleClass("ghost");
-            $(".skill#"+skill_id).draggable("enable");
-            this.remove();
-        });
-        
-        return skill;
-        
-    }
-    
-    //reset button
-    $("#reset").click(function() {
-        console.log("reset button clicked");
-        $(".skill_in_canvas").each(function(index) {
-            // console.log("in the loop")
-
-            var skill_id = $(this).attr("id");
-            // console.log($(".skill#"+skill_id));
-            $(".skill#"+skill_id).toggleClass("ghost");
-            $(".skill#"+skill_id).draggable("enable");
-            this.remove();
-        });
-    });
-    // add the sign out function
-    $('#exit').attr('href', '/login');
-    //end modificaition
-    
-    $("#save").click(function(){
-        var dict = {};
-        dict["survey_id"] = survey_id;
-        var canvas_data = {};
-        canvas_data["canvas_size"] = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
-        var skills_pos = {};
-        $(".skill_in_canvas").each(function(index){
-            // console.log($(this).attr("id"));
-            // console.log($(this).position());
-            skills_pos[$(this).attr("id")] = $(this).position();
-            //normalize coordinates
-        });
-        canvas_data["skills_pos"]=skills_pos;
-        
-        var skill_no_pos = [];
-        
-        $(".skill").not(".ghost").each(function(index){
-            skill_no_pos.push($(this).attr("id"));
-        });
-        canvas_data["skill_no_pos"] = skill_no_pos;
-
-        dict["canvas_data"] = canvas_data;
-        
-        $.getJSON("/userinfo",function(result) {
-            dict["user_id"] = result;
-            $.ajax({
-              type:"POST",
-              url: "/kaiyue/test",
-              data: JSON.stringify({"total":dict}),
-              // data: {"total":dict},
-              dataType: "json",
-              contentType: 'application/json;charset=UTF-8',
-
-              success: function(){
-                  alert("Great! 2x2 canvas saved!");
-              }
-
-            });
-        });
-    });
-    
-    function drawCanvas(){
-        var canvas = $("#myCanvas");
-        var width = canvas.parent().width();
-        var height = canvas.parent().height();
-        // console.log(height);
-        canvas = document.getElementById("myCanvas");
-        canvas.width = width;
-        canvas.height = height;
-        var ctx = canvas.getContext("2d");
-        ctx.lineWidth=2;
-        ctx.moveTo(0.05*width,height/2);
-        ctx.lineTo(0.95*width,height/2);
-        ctx.moveTo(width/2,0.05*height);
-        ctx.lineTo(width/2,0.95*height);
-        ctx.stroke();
-        
-        ctx.lineWidth=1;
-        ctx.beginPath();
-        ctx.moveTo(0.05*width,height/2);
-        ctx.lineTo(0.05*width+20,height/2-6);
-        ctx.lineTo(0.05*width+20,height/2+6);
-        ctx.fill();
-        
-        ctx.moveTo(0.95*width,height/2);
-        ctx.lineTo(0.95*width-20,height/2-6);
-        ctx.lineTo(0.95*width-20,height/2+6);
-        ctx.fill();
-        
-        ctx.moveTo(width/2,0.05*height);
-        ctx.lineTo(width/2-6,0.05*height+20);
-        ctx.lineTo(width/2+6,0.05*height+20);
-        ctx.fill();
-        
-        ctx.moveTo(width/2,0.95*height);
-        ctx.lineTo(width/2-6,0.95*height-20);
-        ctx.lineTo(width/2+6,0.95*height-20);
-        ctx.fill();
-        
-        function drawTemplate(ctx) {
-            $.getJSON("/template/"+survey_id, function(result){
-            // console.log(result)
-    
-            var tp = result.top;
-            var bot = result.bottom;
-            var left = result.left;
-            var right = result.right;
-    
-            
-            ctx.font="12px Comic Sans MS";
-            ctx.textAlign="left"; 
-            ctx.fillText(left,0.05*width + 24,height/2 + 12);
-            ctx.textAlign="right"; 
-            ctx.fillText(right,0.95*width - 24 ,height/2 + 12);
-            ctx.textAlign="center";
-            ctx.fillText(tp, width/2, 0.05*height - 12);
-            ctx.textAlign="center";
-            ctx.fillText(bot, width/2, 0.95*height + 12);
-        
-            });
-       
-        }
-        
-        drawTemplate(ctx);
-    }
-    
-    drawCanvas();
 });
