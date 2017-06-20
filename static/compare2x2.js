@@ -232,7 +232,17 @@ $(document).ready(function(){
                             console.log($("#"+skill_id+".skill"));
                             $("#"+skill_id+".skill").toggleClass("ghost");
                             $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
-                        })
+                            
+                            
+                        });
+                        skill_in_canvas.click(function(){
+                            var skill_id = $(this).attr("id");
+                            var skill = $("#"+skill_id+".skill");
+                            var skills = $("div.skills");
+                            skills.animate({
+                                scrollTop:skills.scrollTop()+ skill.offset().top - skills.offset().top
+                            },100);
+                        });
                         
                     });
                 }
@@ -441,7 +451,18 @@ $(document).ready(function(){
                     console.log($("#"+skill_id+".skill"));
                     $("#"+skill_id+".skill").toggleClass("ghost");
                     $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
-                })
+                    
+                    
+                });
+                
+                $(dropped).click(function(){
+                    var skill_id = $(this).attr("id");
+                    var skill = $("#"+skill_id+".skill");
+                    var skills = $("div.skills");
+                    skills.animate({
+                        scrollTop:skills.scrollTop()+ skill.offset().top - skills.offset().top
+                    },100);
+                });
                 
                 var id = $(dropped).attr("id");
                 var skill_in_pre_canvas = $("#"+id+".skill_in_pre_canvas");

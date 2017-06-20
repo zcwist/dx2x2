@@ -14,7 +14,9 @@ $(document).ready(function(){
         return scale*$(document).height();
     });
     
+    var skills_num;
     $.getJSON("/skills/"+survey_id,function(result){
+        skills_num = result.length;
         $.each(result,function(i, field){
             $('.skills').append(
                 '<div class="row skill group" id="'+field.id+'">'+
@@ -141,9 +143,20 @@ $(document).ready(function(){
                         
                         skill_in_canvas.hover(function(){
                             var skill_id = $(this).attr("id");
-                            console.log($("#"+skill_id+".skill"));
+                            // console.log($("#"+skill_id+".skill"));
                             $("#"+skill_id+".skill").toggleClass("ghost");
                             $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
+                            
+                            
+                        });
+                        
+                        skill_in_canvas.click(function(){
+                            var skill_id = $(this).attr("id");
+                            var skill = $("#"+skill_id+".skill");
+                            var skills = $("div.skills");
+                            skills.animate({
+                                scrollTop:skills.scrollTop()+ skill.offset().top - skills.offset().top
+                            },200);
                         })
                         
                     });
@@ -220,6 +233,14 @@ $(document).ready(function(){
                     console.log($("#"+skill_id+".skill"));
                     $("#"+skill_id+".skill").toggleClass("ghost");
                     $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
+                })
+                $(dropped).click(function(){
+                    var skill_id = $(this).attr("id");
+                    var skill = $("#"+skill_id+".skill");
+                    var skills = $("div.skills");
+                    skills.animate({
+                        scrollTop:skills.scrollTop()+ skill.offset().top - skills.offset().top
+                    },200);
                 })
             }
         }
