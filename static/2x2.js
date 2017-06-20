@@ -140,7 +140,7 @@ $(document).ready(function(){
                         });
                         
                         skill_in_canvas.hover(function(){
-                            skill_id = $(this).attr("id");
+                            var skill_id = $(this).attr("id");
                             console.log($("#"+skill_id+".skill"));
                             $("#"+skill_id+".skill").toggleClass("ghost");
                             $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
@@ -216,7 +216,7 @@ $(document).ready(function(){
                 });
                 
                 $(dropped).hover(function(){
-                    skill_id = $(this).attr("id");
+                    var skill_id = $(this).attr("id");
                     console.log($("#"+skill_id+".skill"));
                     $("#"+skill_id+".skill").toggleClass("ghost");
                     $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
