@@ -136,8 +136,9 @@ $(document).ready(function(){
                             
                             skill_id = $(this).attr("id");
                             // console.log($(".skill#"+skill_id));
-                            $(".skill#"+skill_id).toggleClass("ghost");
+                            // $(".skill#"+skill_id).toggleClass("ghost");
                             $(".skill#"+skill_id).draggable("enable");
+                            $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
                             this.remove();
                         });
                         
@@ -223,8 +224,9 @@ $(document).ready(function(){
                     
                     var skill_id = $(this).attr("id");
                     // console.log($(".skill#"+skill_id));
-                    $(".skill#"+skill_id).toggleClass("ghost");
+                    // $(".skill#"+skill_id).toggleClass("ghost");
                     $(".skill#"+skill_id).draggable("enable");
+                    $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
                     this.remove();
                 });
                 
@@ -246,67 +248,6 @@ $(document).ready(function(){
         }
     });
     
-    function skill_in_canvas_render(skill,position){
-        skill.accordion({active:false, icons: null});
-        skill.accordion({active:false, icons: null});
-        // $(dropped+">h5").removeClass("ui-state-active");
-        skill.toggleClass("ghost");
-        skill.removeClass("skill");
-        
-        skill.addClass("skill_in_canvas");
-        skill.detach().css({'position':'absolute', 'top':position.top,'left':position.left}).append("#dxcanvas");
-        skill.draggable({
-            containment: "parent"
-            });
-        skill.children("h5").addClass("dx");
-        
-        // close icon
-        // $(dropped+">h5").addClass("dx");
-        // console.log("<div style='float:right' id='"+$(this).attr(id)+"'><sup>&nbsp x</s</div>");
-        
-        // $(dropped).prepend("<div style='float:right' class='cl' id='"+$(dropped).attr("id")+"'><sup>&nbsp x</s</div>")
-
-        // $(".cl#"+$(dropped).attr("id")).click(function(){
-        //     skill_id = $(this).attr("id");
-        //     console.log("close"+skill_id);
-        //     $(".skill#"+skill_id).toggleClass("ghost");
-        //     $(this).parent().remove();
-        // })
-        
-        skill.children("h5").removeClass("ui-accordion-header");
-        //Return for long skill name
-            var skill_text = skill.children("h5").text().split(" ");
-            skill.children("h5").empty();
-            var i;
-            for (i = 0; i < Math.ceil(skill_text.length/2); i++){
-                skill.children("h5").append(skill_text[i]);
-                if (i<Math.ceil(skill_text.length/2)-1){
-                    skill.children("h5").append(" ");
-                }
-            }
-            skill.children("h5").append("<br>");
-            for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
-                skill.children("h5").append(skill_text[i]);
-                if (i<Math.ceil(skill_text.length)-1){
-                    skill.children("h5").append(" ");
-                }
-            }
-        
-        
-        console.log(skill_text.length);
-        skill.dblclick(function(){
-            // console.log($(this).attr("id"));
-            
-            var skill_id = $(this).attr("id");
-            // console.log($(".skill#"+skill_id));
-            $(".skill#"+skill_id).toggleClass("ghost");
-            $(".skill#"+skill_id).draggable("enable");
-            this.remove();
-        });
-        
-        return skill;
-        
-    }
     
     //reset button
     $("#reset").click(function() {

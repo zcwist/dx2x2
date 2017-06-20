@@ -144,9 +144,10 @@ def loadcanvas():
 @app.route('/demo')
 def showdemo():
     user = DXUser()
-    user.id = "001"
-    flask_login.login_user(user);
-    return flask.render_template('2x2.html',survey_id=1)
+    user.id = "002"
+    flask_login.login_user(user)
+    print("here")
+    return flask.render_template('compare2x2.html', survey_id="1", pre_survey_id="1")
     
     
     

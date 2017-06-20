@@ -228,8 +228,9 @@ $(document).ready(function(){
                                 
                                 skill_id = $(this).attr("id");
                                 // console.log($(".skill#"+skill_id));
-                                $(".skill#"+skill_id).toggleClass("ghost");
+                                // $(".skill#"+skill_id).toggleClass("ghost");
                                 $(".skill#"+skill_id).draggable("enable");
+                                $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
                                 this.remove();
                             });
                             skill_in_canvas.hover(function(){
@@ -447,8 +448,10 @@ $(document).ready(function(){
                     
                     var skill_id = $(this).attr("id");
                     // console.log($(".skill#"+skill_id));
-                    $(".skill#"+skill_id).toggleClass("ghost");
+                    // $(".skill#"+skill_id).toggleClass("ghost");
                     $(".skill#"+skill_id).draggable("enable");
+                    // $("#"+skill_id+".skill").toggleClass("ghost");
+                    $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
                     this.remove();
                 });
                 
