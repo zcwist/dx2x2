@@ -139,6 +139,13 @@ $(document).ready(function(){
                             this.remove();
                         });
                         
+                        skill_in_canvas.hover(function(){
+                            skill_id = $(this).attr("id");
+                            console.log($("#"+skill_id+".skill"));
+                            $("#"+skill_id+".skill").toggleClass("ghost");
+                            $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
+                        })
+                        
                     });
                 }
               }
@@ -207,6 +214,13 @@ $(document).ready(function(){
                     $(".skill#"+skill_id).draggable("enable");
                     this.remove();
                 });
+                
+                $(dropped).hover(function(){
+                    skill_id = $(this).attr("id");
+                    console.log($("#"+skill_id+".skill"));
+                    $("#"+skill_id+".skill").toggleClass("ghost");
+                    $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
+                })
             }
         }
     });
