@@ -6,6 +6,10 @@ $(document).ready(function(){
     // }
     var survey_id = $("#survey_id").text();
     var pre_survey_id = $("#pre_survey_id").text();
+    
+    if (survey_id==pre_survey_id){
+        $("#reset").click();
+    }
 
     var scale = 0.7;
     $("#canvasgrid").height(function(){
@@ -155,99 +159,101 @@ $(document).ready(function(){
         $.getJSON("/userinfo",function(result) {
             var user_id = result;
             //render saved canvas
-            var survey_info = {user_id:user_id, survey_id:survey_id};
-            $.ajax({
-              type:"POST",
-              url: "/loadcanvas",
-              data: JSON.stringify({"survey_info":survey_info}),
-              dataType: "json",
-              contentType: 'application/json;charset=UTF-8',
-              success: function(result){
-                // console.log(result);
-                if (result.surveyed){
+            if (survey_id!=pre_survey_id){
+                var survey_info = {user_id:user_id, survey_id:survey_id};
+                $.ajax({
+                  type:"POST",
+                  url: "/loadcanvas",
+                  data: JSON.stringify({"survey_info":survey_info}),
+                  dataType: "json",
+                  contentType: 'application/json;charset=UTF-8',
+                  success: function(result){
                     // console.log(result);
-                    // console.log(result.canvas_data);
-                    var canvas_data = result.canvas_data;
-                    
-                    $.each(canvas_data.skills_pos,function(key, value){
-                        //reload skill list
-                        var skill_id = key;
-                        // console.log($(".skill#"+skill_id));
-                        $(".skill#"+skill_id).toggleClass("ghost");
-                        $(".skill#"+skill_id).draggable("disable");
+                    if (result.surveyed){
+                        // console.log(result);
+                        // console.log(result.canvas_data);
+                        var canvas_data = result.canvas_data;
                         
-                        //reload canvas
-                        var skill_in_canvas = $(".skill#"+skill_id).clone();
-                        
-                        skill_in_canvas.accordion({active:false,icons:false});
-                        skill_in_canvas.removeClass("skill");
-                        skill_in_canvas.accordion({active:false,icons:false}); //clear the icons double created by cloning
-
-                        skill_in_canvas.toggleClass("ghost");
-                        skill_in_canvas.addClass("skill_in_canvas");
-                        skill_in_canvas.draggable({
-                            containment: "parent"
-                        });
-                        skill_in_canvas.children("h5").addClass("dx");
-                        skill_in_canvas.children("h5").removeClass("ui-accordion-header");
-                        
-                        //Return for long skill name
-                        var skill_text = skill_in_canvas.children("h5").text().split(" ");
-                        skill_in_canvas.children("h5").empty();
-                        var i;
-                        for (i = 0; i < Math.ceil(skill_text.length/2); i++){
-                            skill_in_canvas.children("h5").append(skill_text[i]);
-                            if (i<Math.ceil(skill_text.length/2)-1){
-                                skill_in_canvas.children("h5").append(" ");
-                            }
-                        }
-                        skill_in_canvas.children("h5").append("<br>");
-                        for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
-                            skill_in_canvas.children("h5").append(skill_text[i]);
-                            if (i<Math.ceil(skill_text.length)-1){
-                                skill_in_canvas.children("h5").append(" ");
-                            }
-                        }
-                        
-                        
-                        
-                        var original_canvas_size = canvas_data.canvas_size;
-                        var new_canvas_size = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
-                        var width_coff=new_canvas_size.width/original_canvas_size.width;
-                        var height_coff=new_canvas_size.height/original_canvas_size.height;
-                        var position = value;
-                        skill_in_canvas.detach().css({'position':'absolute', 'top':position.top*height_coff,'left':position.left*width_coff});
-                        skill_in_canvas.appendTo($("#dxcanvas"));
-                        skill_in_canvas.dblclick(function(){
-                            // console.log($(this).attr("id"));
-                            
-                            skill_id = $(this).attr("id");
+                        $.each(canvas_data.skills_pos,function(key, value){
+                            //reload skill list
+                            var skill_id = key;
                             // console.log($(".skill#"+skill_id));
                             $(".skill#"+skill_id).toggleClass("ghost");
-                            $(".skill#"+skill_id).draggable("enable");
-                            this.remove();
-                        });
-                        skill_in_canvas.hover(function(){
-                            var skill_id = $(this).attr("id");
-                            console.log($("#"+skill_id+".skill"));
-                            $("#"+skill_id+".skill").toggleClass("ghost");
-                            $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
+                            $(".skill#"+skill_id).draggable("disable");
+                            
+                            //reload canvas
+                            var skill_in_canvas = $(".skill#"+skill_id).clone();
+                            
+                            skill_in_canvas.accordion({active:false,icons:false});
+                            skill_in_canvas.removeClass("skill");
+                            skill_in_canvas.accordion({active:false,icons:false}); //clear the icons double created by cloning
+    
+                            skill_in_canvas.toggleClass("ghost");
+                            skill_in_canvas.addClass("skill_in_canvas");
+                            skill_in_canvas.draggable({
+                                containment: "parent"
+                            });
+                            skill_in_canvas.children("h5").addClass("dx");
+                            skill_in_canvas.children("h5").removeClass("ui-accordion-header");
+                            
+                            //Return for long skill name
+                            var skill_text = skill_in_canvas.children("h5").text().split(" ");
+                            skill_in_canvas.children("h5").empty();
+                            var i;
+                            for (i = 0; i < Math.ceil(skill_text.length/2); i++){
+                                skill_in_canvas.children("h5").append(skill_text[i]);
+                                if (i<Math.ceil(skill_text.length/2)-1){
+                                    skill_in_canvas.children("h5").append(" ");
+                                }
+                            }
+                            skill_in_canvas.children("h5").append("<br>");
+                            for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
+                                skill_in_canvas.children("h5").append(skill_text[i]);
+                                if (i<Math.ceil(skill_text.length)-1){
+                                    skill_in_canvas.children("h5").append(" ");
+                                }
+                            }
                             
                             
+                            
+                            var original_canvas_size = canvas_data.canvas_size;
+                            var new_canvas_size = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
+                            var width_coff=new_canvas_size.width/original_canvas_size.width;
+                            var height_coff=new_canvas_size.height/original_canvas_size.height;
+                            var position = value;
+                            skill_in_canvas.detach().css({'position':'absolute', 'top':position.top*height_coff,'left':position.left*width_coff});
+                            skill_in_canvas.appendTo($("#dxcanvas"));
+                            skill_in_canvas.dblclick(function(){
+                                // console.log($(this).attr("id"));
+                                
+                                skill_id = $(this).attr("id");
+                                // console.log($(".skill#"+skill_id));
+                                $(".skill#"+skill_id).toggleClass("ghost");
+                                $(".skill#"+skill_id).draggable("enable");
+                                this.remove();
+                            });
+                            skill_in_canvas.hover(function(){
+                                var skill_id = $(this).attr("id");
+                                // console.log($("#"+skill_id+".skill"));
+                                $("#"+skill_id+".skill").toggleClass("ghost");
+                                $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
+                                
+                                
+                            });
+                            skill_in_canvas.click(function(){
+                                var skill_id = $(this).attr("id");
+                                var skill = $("#"+skill_id+".skill");
+                                var skills = $("div.skills");
+                                skills.animate({
+                                    scrollTop:skills.scrollTop()+ skill.offset().top - skills.offset().top
+                                },100);
+                            });
+                            
                         });
-                        skill_in_canvas.click(function(){
-                            var skill_id = $(this).attr("id");
-                            var skill = $("#"+skill_id+".skill");
-                            var skills = $("div.skills");
-                            skills.animate({
-                                scrollTop:skills.scrollTop()+ skill.offset().top - skills.offset().top
-                            },100);
-                        });
-                        
-                    });
-                }
-              }
-            });
+                    }
+                  }
+                });
+            }
             
             //Get pre-survey canvas data
             survey_info = {user_id:user_id, survey_id:pre_survey_id};
@@ -448,7 +454,7 @@ $(document).ready(function(){
                 
                 $(dropped).hover(function(){
                     var skill_id = $(this).attr("id");
-                    console.log($("#"+skill_id+".skill"));
+                    // console.log($("#"+skill_id+".skill"));
                     $("#"+skill_id+".skill").toggleClass("ghost");
                     $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
                     
