@@ -65,8 +65,7 @@ def login():
 
 @app.route('/compare/<survey_id>/<pre_survey_id>')
 def compare(survey_id,pre_survey_id):
-    # print ("here")
-    return "hello world"
+    return flask.render_template('compare2x2.html', survey_id=survey_id, pre_survey_id=pre_survey_id);
 
 @app.route('/protected/<survey_id>')
 @flask_login.login_required

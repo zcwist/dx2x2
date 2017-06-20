@@ -15,69 +15,6 @@ $(document).ready(function(){
         return scale*$(document).height();
     });
     
-    
-    function skill_in_canvas_render(skill,position){
-        skill.accordion({active:false, icons: null});
-        skill.accordion({active:false, icons: null});
-        // $(dropped+">h5").removeClass("ui-state-active");
-        skill.toggleClass("ghost");
-        skill.removeClass("skill");
-        
-        skill.addClass("skill_in_canvas");
-        skill.detach().css({'position':'absolute', 'top':position.top,'left':position.left}).append("#dxcanvas");
-        skill.draggable({
-            containment: "parent"
-            });
-        skill.children("h5").addClass("dx");
-        
-        // close icon
-        // $(dropped+">h5").addClass("dx");
-        // console.log("<div style='float:right' id='"+$(this).attr(id)+"'><sup>&nbsp x</s</div>");
-        
-        // $(dropped).prepend("<div style='float:right' class='cl' id='"+$(dropped).attr("id")+"'><sup>&nbsp x</s</div>")
-
-        // $(".cl#"+$(dropped).attr("id")).click(function(){
-        //     skill_id = $(this).attr("id");
-        //     console.log("close"+skill_id);
-        //     $(".skill#"+skill_id).toggleClass("ghost");
-        //     $(this).parent().remove();
-        // })
-        
-        skill.children("h5").removeClass("ui-accordion-header");
-        //Return for long skill name
-            var skill_text = skill.children("h5").text().split(" ");
-            skill.children("h5").empty();
-            var i;
-            for (i = 0; i < Math.ceil(skill_text.length/2); i++){
-                skill.children("h5").append(skill_text[i]);
-                if (i<Math.ceil(skill_text.length/2)-1){
-                    skill.children("h5").append(" ");
-                }
-            }
-            skill.children("h5").append("<br>");
-            for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
-                skill.children("h5").append(skill_text[i]);
-                if (i<Math.ceil(skill_text.length)-1){
-                    skill.children("h5").append(" ");
-                }
-            }
-        
-        
-        console.log(skill_text.length);
-        skill.dblclick(function(){
-            // console.log($(this).attr("id"));
-            
-            var skill_id = $(this).attr("id");
-            // console.log($(".skill#"+skill_id));
-            $(".skill#"+skill_id).toggleClass("ghost");
-            $(".skill#"+skill_id).draggable("enable");
-            this.remove();
-        });
-        
-        return skill;
-        
-    }
-    
     //reset button
     $("#reset").click(function() {
         console.log("reset button clicked");
@@ -213,49 +150,11 @@ $(document).ready(function(){
             "</div>");
         });
         
-        $(".skills").accordion({
-            animate: 300,
-            collapsible: true,
-            active: false,
-            header: "> div > h5"
-
-        });
-        $(".skill").draggable({
-            helper: function(event){
-                var ret = $(this).clone();
-                ret.appendTo("#dxcanvas");
-                $(this).toggleClass("ghost");
-                ret.accordion({active:true,icons:false});
-                ret.accordion({active:true,icons:false});
-                return ret;
-            },
-            stop: function(event, ui){
-                var position = ui.helper.position();
-                if (position.left >0){
-                    $(this).draggable( "disable" );
-                }
-                else {
-                    $(this).toggleClass("ghost");
-                    
-                }
-            },
-            // containment: ["parent",$("#canvasgrid
-            containment: $("#mainpanel"),
-            revert: false,
-        });
-        
-        $(".skill").hover(function () {
-            if ($(this).hasClass("ghost")){
-                var id = $(this).attr("id");
-                var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
-                // skill_in_canvas.effect("highlight",{},2000);
-                skill_in_canvas.toggleClass("highlight-skill");
-            }
-        });
-        
+        var pre_canvas;
         //Check if this user surveyed
         $.getJSON("/userinfo",function(result) {
             var user_id = result;
+            //render saved canvas
             var survey_info = {user_id:user_id, survey_id:survey_id};
             $.ajax({
               type:"POST",
@@ -333,7 +232,140 @@ $(document).ready(function(){
                 }
               }
             });
+            
+            //Get pre-survey canvas data
+            survey_info = {user_id:user_id, survey_id:pre_survey_id};
+            $.ajax({
+              type:"POST",
+              url: "/loadcanvas",
+              data: JSON.stringify({"survey_info":survey_info}),
+              dataType: "json",
+              contentType: 'application/json;charset=UTF-8',
+              success: function(result){
+                  pre_canvas= result;
+                  console.log(pre_canvas);
+              }
+            });
         });
+        
+        $(".skills").accordion({
+            animate: 300,
+            collapsible: true,
+            active: false,
+            header: "> div > h5"
+
+        });
+        $(".skill").draggable({
+            helper: function(event){
+                var ret = $(this).clone();
+                ret.appendTo("#dxcanvas");
+                $(this).toggleClass("ghost");
+                ret.accordion({active:true,icons:false});
+                ret.accordion({active:true,icons:false});
+                return ret;
+            },
+            stop: function(event, ui){
+                var position = ui.helper.position();
+                if (position.left >0){
+                    $(this).draggable( "disable" );
+                }
+                else {
+                    $(this).toggleClass("ghost");
+                    
+                }
+            },
+            // containment: ["parent",$("#canvasgrid
+            containment: $("#mainpanel"),
+            revert: false,
+        });
+        
+        $(".skill").hover(function () {
+            if ($(this).hasClass("ghost")){
+                var id = $(this).attr("id");
+                var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
+                // skill_in_canvas.effect("highlight",{},2000);
+                skill_in_canvas.toggleClass("highlight-skill");
+            }
+            // for a skill in pre-canvas but not in new canvas
+            else {
+                // console.log(pre_canvas["canvas_data"]["skills_pos"]);
+                var skill_id = $(this).attr("id");
+                
+                var skill_pre_pos = pre_canvas["canvas_data"]["skills_pos"][skill_id];
+                
+                if (skill_pre_pos){
+                    
+                    var skill_in_pre = $(".skill#"+skill_id).clone();
+                    
+                    skill_in_pre.accordion({active:false,icons:false});
+                    skill_in_pre.removeClass("skill");
+                    skill_in_pre.accordion({active:false,icons:false}); //clear the icons double created by cloning
+
+                    skill_in_pre.addClass("skill_in_pre_canvas");
+                    // skill_in_pre.draggable("disable");
+                    skill_in_pre.children("h5").addClass("dx");
+                    skill_in_pre.children("h5").removeClass("ui-accordion-header");
+                    
+                    //Return for long skill name
+                    var skill_text = skill_in_pre.children("h5").text().split(" ");
+                    skill_in_pre.children("h5").empty();
+                    var i;
+                    for (i = 0; i < Math.ceil(skill_text.length/2); i++){
+                        skill_in_pre.children("h5").append(skill_text[i]);
+                        if (i<Math.ceil(skill_text.length/2)-1){
+                            skill_in_pre.children("h5").append(" ");
+                        }
+                    }
+                    skill_in_pre.children("h5").append("<br>");
+                    for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
+                        skill_in_pre.children("h5").append(skill_text[i]);
+                        if (i<Math.ceil(skill_text.length)-1){
+                            skill_in_pre.children("h5").append(" ");
+                        }
+                    }
+                    
+                    
+                    
+                    var original_canvas_size = pre_canvas.canvas_data.canvas_size;
+                    var new_canvas_size = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
+                    var width_coff=new_canvas_size.width/original_canvas_size.width;
+                    var height_coff=new_canvas_size.height/original_canvas_size.height;
+                    var position = skill_pre_pos;
+                    skill_in_pre.detach().css({'position':'absolute', 'top':position.top*height_coff,'left':position.left*width_coff});
+                    skill_in_pre.appendTo($("#dxcanvas"));
+                }
+                
+                
+                
+                
+                
+                var skill_in_pre = $(".skill#"+skill_id).clone();
+                
+                skill_in_pre.accordion({active:false,icons:false});
+                skill_in_pre.removeClass("skill");
+                skill_in_pre.accordion({active:false,icons:false}); //clear the icons double created by cloning
+                
+                skill_in_pre.addClass("skill_in_pre");
+                
+                
+            }
+        }, function(){
+            var id = $(this).attr("id");
+            if ($(this).hasClass("ghost")){
+                var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
+                // skill_in_canvas.effect("highlight",{},2000);
+                skill_in_canvas.toggleClass("highlight-skill");
+            }
+            else{
+                // console.log("exit");
+                var skill_in_pre_canvas = $("#"+id+".skill_in_pre_canvas")
+                console.logskill_in_pre_canvas;
+                skill_in_pre_canvas.remove();
+            }
+        });
+        
+
+        
     });
     
     $("#dxcanvas").droppable({
@@ -397,7 +429,15 @@ $(document).ready(function(){
                     $(".skill#"+skill_id).draggable("enable");
                     this.remove();
                 });
-            }
+                
+                var id = $(dropped).attr("id");
+                var skill_in_pre_canvas = $("#"+id+".skill_in_pre_canvas");
+                console.log(skill_in_pre_canvas);
+                skill_in_pre_canvas.remove();
+                
+            };
+            
+            
         }
     });
 });

@@ -12,12 +12,6 @@
     background: rgba(255, 255, 255, .5);
 }
 
-.ui-accordion-header{
-   /*background:black;*/
-}
-/*.ui-widget-header{*/
-/*    background:rgba(255,255,255,0.7);*/
-/*}*/
 .ui-state-active.dx{
     background:rgba(255,255,255,0.7);
     border:1px solid #cccccc;
@@ -52,26 +46,6 @@ body {
     /*width:100%;*/
     /*height:100%;*/
 }
-
-/*.row_skill {*/
-/*	background-color:#44c767;*/
-/*	-moz-border-radius:28px;*/
-/*	-webkit-border-radius:28px;*/
-/*	border-radius:28px;*/
-/*	border:1px solid #18ab29;*/
-/*	display:inline-block;*/
-/*	cursor:pointer;*/
-/*	color:#ffffff;*/
-/*	font-family:Arial;*/
-/*	font-size:17px;*/
-/*	padding:16px 31px;*/
-/*	text-decoration:none;*/
-/*	text-shadow:0px 1px 0px #2f6627;*/
-/*}*/
-/*.row_skill:hover {*/
-/*	background-color:#5cbf2a;*/
-/*}*/
-/*.row_skill:active {*/
-/*	position:relative;*/
-/*	top:1px;*/
-/*}*/
+.skill_in_pre_canvas{
+    opacity: .3;
+}
