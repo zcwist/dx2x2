@@ -35,10 +35,38 @@ $(document).ready(function(){
         $(".skill").draggable({
             helper: function(event){
                 var ret = $(this).clone();
-                ret.appendTo("#dxcanvas");
+                
                 $(this).toggleClass("ghost");
                 ret.accordion({active:true,icons:false});
                 ret.accordion({active:true,icons:false});
+
+                
+                ret.children("h5").removeClass("ui-accordion-header");
+                ret.addClass("skill_in_canvas");
+                ret.children("h5").addClass("dx");
+
+                var skill_text = ret.children("h5").text().split(" ");
+                // console.log(skill_text.length);
+                ret.children("h5").empty();
+                var i;
+                for (i = 0; i < Math.ceil(skill_text.length/2); i++){
+                    // console.log(i);
+                    ret.children("h5").append(skill_text[i]);
+                    if (i<Math.ceil(skill_text.length/2)-1){
+                        ret.children("h5").append(" ");
+                    }
+                }
+                ret.children("h5").append("<br>");
+                for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
+                    // console.log(i);
+                    ret.children("h5").append(skill_text[i]);
+                    if (i<Math.ceil(skill_text.length)-1){
+                        ret.children("h5").append(" ");
+                    }
+                }
+                ret.appendTo("#dxcanvas");
+                console.log(ret);
+
                 return ret;
             },
             stop: function(event, ui){

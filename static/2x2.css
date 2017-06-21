@@ -20,6 +20,16 @@
     margin:0 0 0 0;
     text-align:center
 }
+
+.ui-state-hover.dx{
+    background:rgba(255,255,255,0.7);
+    border:1px solid #cccccc;
+    color:#1c94c4;
+    padding:.2em .2em .2em .3em;
+    margin:0 0 0 0;
+    text-align:center
+}
+
 .dx.highlight-skill{
     background-color: #ffff99;
 }
