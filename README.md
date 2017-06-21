@@ -4,4 +4,4 @@ way
 
 Created by ChengWei Zhang and Kaiyue Wang
 
-![2 by 2 matrix] (images/2by2.png)
+![2 by 2 matrix](images/2by2.png)
