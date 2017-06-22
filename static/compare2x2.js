@@ -267,6 +267,90 @@ $(document).ready(function(){
               success: function(result){
                   pre_canvas= result;
                   console.log(pre_canvas);
+                  $(".skill").hover(function () {
+                    if ($(this).hasClass("ghost")){
+                        var id = $(this).attr("id");
+                        var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
+                        // skill_in_canvas.effect("highlight",{},2000);
+                        skill_in_canvas.toggleClass("highlight-skill");
+                    }
+                    // for a skill in pre-canvas but not in new canvas
+                    else {
+                        // console.log(pre_canvas["canvas_data"]["skills_pos"]);
+                        var skill_id = $(this).attr("id");
+                        
+                        var skill_pre_pos = pre_canvas["canvas_data"]["skills_pos"][skill_id];
+                        
+                        if (skill_pre_pos){
+                            
+                            var skill_in_pre = $(".skill#"+skill_id).clone();
+                            
+                            skill_in_pre.accordion({active:false,icons:false});
+                            skill_in_pre.removeClass("skill");
+                            skill_in_pre.accordion({active:false,icons:false}); //clear the icons double created by cloning
+
+                            skill_in_pre.addClass("skill_in_pre_canvas");
+                            // skill_in_pre.draggable("disable");
+                            skill_in_pre.children("h5").addClass("dx");
+                            skill_in_pre.children("h5").removeClass("ui-accordion-header");
+                            
+                            //Return for long skill name
+                            var skill_text = skill_in_pre.children("h5").text().split(" ");
+                            skill_in_pre.children("h5").empty();
+                            var i;
+                            for (i = 0; i < Math.ceil(skill_text.length/2); i++){
+                                skill_in_pre.children("h5").append(skill_text[i]);
+                                if (i<Math.ceil(skill_text.length/2)-1){
+                                    skill_in_pre.children("h5").append(" ");
+                                }
+                            }
+                            skill_in_pre.children("h5").append("<br>");
+                            for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
+                                skill_in_pre.children("h5").append(skill_text[i]);
+                                if (i<Math.ceil(skill_text.length)-1){
+                                    skill_in_pre.children("h5").append(" ");
+                                }
+                            }
+                            
+                            
+                            
+                            var original_canvas_size = pre_canvas.canvas_data.canvas_size;
+                            var new_canvas_size = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
+                            var width_coff=new_canvas_size.width/original_canvas_size.width;
+                            var height_coff=new_canvas_size.height/original_canvas_size.height;
+                            var position = skill_pre_pos;
+                            skill_in_pre.detach().css({'position':'absolute', 'top':position.top*height_coff,'left':position.left*width_coff});
+                            skill_in_pre.appendTo($("#dxcanvas"));
+                        }
+                        
+                        
+                        
+                        
+                        
+                        var skill_in_pre = $(".skill#"+skill_id).clone();
+                        
+                        skill_in_pre.accordion({active:false,icons:false});
+                        skill_in_pre.removeClass("skill");
+                        skill_in_pre.accordion({active:false,icons:false}); //clear the icons double created by cloning
+                        
+                        skill_in_pre.addClass("skill_in_pre");
+                        
+                        
+                    }
+                }, function(){
+                    var id = $(this).attr("id");
+                    if ($(this).hasClass("ghost")){
+                        var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
+                        // skill_in_canvas.effect("highlight",{},2000);
+                        skill_in_canvas.toggleClass("highlight-skill");
+                    }
+                    else{
+                        // console.log("exit");
+                        var skill_in_pre_canvas = $("#"+id+".skill_in_pre_canvas")
+                        console.logskill_in_pre_canvas;
+                        skill_in_pre_canvas.remove();
+                    }
+                });
               }
             });
         });
@@ -330,90 +414,7 @@ $(document).ready(function(){
             revert: false,
         });
         
-        $(".skill").hover(function () {
-            if ($(this).hasClass("ghost")){
-                var id = $(this).attr("id");
-                var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
-                // skill_in_canvas.effect("highlight",{},2000);
-                skill_in_canvas.toggleClass("highlight-skill");
-            }
-            // for a skill in pre-canvas but not in new canvas
-            else {
-                // console.log(pre_canvas["canvas_data"]["skills_pos"]);
-                var skill_id = $(this).attr("id");
-                
-                var skill_pre_pos = pre_canvas["canvas_data"]["skills_pos"][skill_id];
-                
-                if (skill_pre_pos){
-                    
-                    var skill_in_pre = $(".skill#"+skill_id).clone();
-                    
-                    skill_in_pre.accordion({active:false,icons:false});
-                    skill_in_pre.removeClass("skill");
-                    skill_in_pre.accordion({active:false,icons:false}); //clear the icons double created by cloning
-
-                    skill_in_pre.addClass("skill_in_pre_canvas");
-                    // skill_in_pre.draggable("disable");
-                    skill_in_pre.children("h5").addClass("dx");
-                    skill_in_pre.children("h5").removeClass("ui-accordion-header");
-                    
-                    //Return for long skill name
-                    var skill_text = skill_in_pre.children("h5").text().split(" ");
-                    skill_in_pre.children("h5").empty();
-                    var i;
-                    for (i = 0; i < Math.ceil(skill_text.length/2); i++){
-                        skill_in_pre.children("h5").append(skill_text[i]);
-                        if (i<Math.ceil(skill_text.length/2)-1){
-                            skill_in_pre.children("h5").append(" ");
-                        }
-                    }
-                    skill_in_pre.children("h5").append("<br>");
-                    for (i = Math.ceil(skill_text.length/2); i < skill_text.length ; i++){
-                        skill_in_pre.children("h5").append(skill_text[i]);
-                        if (i<Math.ceil(skill_text.length)-1){
-                            skill_in_pre.children("h5").append(" ");
-                        }
-                    }
-                    
-                    
-                    
-                    var original_canvas_size = pre_canvas.canvas_data.canvas_size;
-                    var new_canvas_size = {"width":$("#myCanvas").width(),"height":$("#myCanvas").height()};
-                    var width_coff=new_canvas_size.width/original_canvas_size.width;
-                    var height_coff=new_canvas_size.height/original_canvas_size.height;
-                    var position = skill_pre_pos;
-                    skill_in_pre.detach().css({'position':'absolute', 'top':position.top*height_coff,'left':position.left*width_coff});
-                    skill_in_pre.appendTo($("#dxcanvas"));
-                }
-                
-                
-                
-                
-                
-                var skill_in_pre = $(".skill#"+skill_id).clone();
-                
-                skill_in_pre.accordion({active:false,icons:false});
-                skill_in_pre.removeClass("skill");
-                skill_in_pre.accordion({active:false,icons:false}); //clear the icons double created by cloning
-                
-                skill_in_pre.addClass("skill_in_pre");
-                
-                
-            }
-        }, function(){
-            var id = $(this).attr("id");
-            if ($(this).hasClass("ghost")){
-                var skill_in_canvas = $("#"+id +".skill_in_canvas>h5");
-                // skill_in_canvas.effect("highlight",{},2000);
-                skill_in_canvas.toggleClass("highlight-skill");
-            }
-            else{
-                // console.log("exit");
-                var skill_in_pre_canvas = $("#"+id+".skill_in_pre_canvas")
-                console.logskill_in_pre_canvas;
-                skill_in_pre_canvas.remove();
-            }
-        });
+        
         
 
         
