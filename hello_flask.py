@@ -115,6 +115,7 @@ def getDataFromSubmit():
     dic = flask.request.json['total']
     user = dic['user_id']
     survey = dic['survey_id']
+    print ("uploading survey"+survey);
     canvas = dic['canvas_data']
     # print(canvas)
     setCanvasData(user, survey, canvas)

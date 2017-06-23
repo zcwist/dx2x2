@@ -73,7 +73,7 @@ def checkSurveyStatus(survey_id):
 
 def setCanvasData(user, survey, coor):
     try:
-        currentData = session.query(Canvas).filter(Canvas.user_id == user and Canvas.class_id == survey).one()
+        currentData = session.query(Canvas).filter(and_(Canvas.user_id == user,Canvas.class_id == survey)).one()
         #add in new Entry if it is Empty
         
         currentData.coordinates = coor
@@ -86,7 +86,7 @@ def setCanvasData(user, survey, coor):
         
 def getCanvasCoordinates(user, survey):
         try:
-            currentData = session.query(Canvas).filter(Canvas.user_id == user and Canvas.class_id == survey).one()
+            currentData = session.query(Canvas).filter(and_(Canvas.user_id == user,Canvas.class_id == survey)).one()
             return currentData.coordinates
         except Exception as e:
             return None
