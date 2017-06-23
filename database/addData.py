@@ -20,7 +20,7 @@ for item in user_list:
     user = User(user_id = item[0], user_name = item[1])
     session.add(user)
     session.commit()
-    
+
 print "added user"
 
 ###add skill_list
@@ -54,5 +54,7 @@ survey1 = Survey(survey_key = "T1", skill_list_manager = skill_listManager, axis
 session.add(survey1)
 session.commit()
 print "added survey"
+
+
 
 ###Fake add some Canvas user input
