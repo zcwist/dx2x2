@@ -44,7 +44,7 @@ def login():
         return flask.render_template('sign_in.html')
     
     student_id = str(flask.request.form['student_id'])
-    print get_user_name(student_id)
+    # print get_user_name(student_id)
     if not get_user_name(student_id):
         return "User doesn't exist"
     if flask.request.form['last_name'] == get_user_name(student_id):
@@ -115,13 +115,13 @@ def getDataFromSubmit():
     dic = flask.request.json['total']
     user = dic['user_id']
     survey = dic['survey_id']
-    print ("uploading survey"+survey);
+    # print ("uploading survey"+survey);
     canvas = dic['canvas_data']
     # print(canvas)
     setCanvasData(user, survey, canvas)
-    print("successfully set canvasData")
+    # print("successfully set canvasData")
     
-    print(getCanvasCoordinates(user,survey))
+    # print(getCanvasCoordinates(user,survey))
 
     #write to db here
     
@@ -147,7 +147,7 @@ def showdemo():
     user = DXUser()
     user.id = "002"
     flask_login.login_user(user)
-    print("here")
+    # print("here")
     return flask.render_template('compare2x2.html', survey_id="1", pre_survey_id="1")
     
     
