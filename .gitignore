@@ -1,4 +1,4 @@
 .config
 .DS_Store
 database/*.pyc
-database/.~c9**
+.~c9**
