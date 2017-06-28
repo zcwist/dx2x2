@@ -86,9 +86,9 @@ def setCanvasData(user, survey, coor):
         session.add(newStudentEntry)
         session.commit()
         
-def getCanvasCoordinates(user, survey_id):
+def getCanvasCoordinates(user_id, survey_id):
     try:
-        currentData = session.query(Canvas).filter(and_(Canvas.user_id == user,Canvas.class_id == survey_id)).one()
+        currentData = session.query(Canvas).filter(and_(Canvas.user_id == user_id,Canvas.class_id == survey_id)).one()
         return currentData.coordinates
     except Exception as e:
         return None
@@ -98,14 +98,7 @@ def getCanvasEntry(survey_id, user_id):
 #     # try:
 #     #     cooridnates = session.query(Canvas).filter(Canvas.)
 
-### create new survey
-###given a survey list ID and a template ID create a survey
-def createNewSurvey(skill_listID, templateID, surveyKey):
-    skill_listManager = session.query(Skill_List_Manager).filter(Skill_List_Manager.id == skill_listID).one()
-    template = session.query(AxisTemplate).filter(AxisTemplate.id == templateID).one()
-    newSurvey = Survey(survey_key= surveyKey, skill_list_manager=skill_listManager, axistemplate=template)
-    session.add(newSurvey)
-    session.commit()
+
 
 
 
