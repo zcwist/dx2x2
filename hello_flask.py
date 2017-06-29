@@ -150,9 +150,5 @@ def showdemo():
     # print("here")
     return flask.render_template('compare2x2.html', survey_id="1", pre_survey_id="1")
     
-    
-    
-    
-        
-  
-app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
+if __name__ == "__main__":
+    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
