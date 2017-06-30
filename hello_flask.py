@@ -33,10 +33,7 @@ def request_loader(request):
     
 @app.route('/', methods=['GET'])
 def index():
-    user = DXUser()
-    user.id = "001"
-    flask_login.login_user(user);
-    return flask.render_template('2x2.html',survey_id=1)
+    return flask.redirect(flask.url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -64,6 +61,7 @@ def login():
     return flask.redirect(flask.url_for('login')) 
 
 @app.route('/compare/<survey_id>/<pre_survey_id>')
+@flask_login.login_required
 def compare(survey_id,pre_survey_id):
     return flask.render_template('compare2x2.html', survey_id=survey_id, pre_survey_id=pre_survey_id);
 

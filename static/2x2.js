@@ -260,7 +260,7 @@ $(document).ready(function(){
                 
                 $(dropped).hover(function(){
                     var skill_id = $(this).attr("id");
-                    console.log($("#"+skill_id+".skill"));
+                    // console.log($("#"+skill_id+".skill"));
                     $("#"+skill_id+".skill").toggleClass("ghost");
                     $("#"+skill_id+".skill > h5").toggleClass("highlight-skill");
                 })
@@ -304,9 +304,12 @@ $(document).ready(function(){
             // console.log($(this).attr("id"));
             // console.log($(this).position());
             skills_pos[$(this).attr("id")] = $(this).position();
+            skills_pos[$(this).attr("id")]["width"] = $(this).width();
+            skills_pos[$(this).attr("id")]["height"] = $(this).height();
             //normalize coordinates
         });
         canvas_data["skills_pos"]=skills_pos;
+        // console.log(skills_pos);
         
         var skill_no_pos = [];
         

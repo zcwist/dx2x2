@@ -46,6 +46,8 @@ $(document).ready(function(){
             // console.log($(this).attr("id"));
             // console.log($(this).position());
             skills_pos[$(this).attr("id")] = $(this).position();
+            skills_pos[$(this).attr("id")]["width"] = $(this).width();
+            skills_pos[$(this).attr("id")]["height"] = $(this).height();
             //normalize coordinates
         });
         canvas_data["skills_pos"]=skills_pos;
