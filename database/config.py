@@ -1,8 +1,10 @@
 import ConfigParser
+import os
+
+dir = os.path.dirname(__file__)
 
 configParser = ConfigParser.RawConfigParser()   
-# configFilePath = '../database/.config'
-configFilePath = 'database/.config'
+configFilePath = os.path.join(dir,"../database/.config")
 configParser.read(configFilePath)
 
 def getDBStr():
