@@ -146,7 +146,7 @@ def showdemo():
     user.id = "002"
     flask_login.login_user(user)
     # print("here")
-    return flask.render_template('compare2x2.html', survey_id="1", pre_survey_id="1")
+    return flask.render_template('2x2.html', survey_id="1")
     
 if __name__ == "__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
