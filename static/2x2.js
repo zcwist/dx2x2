@@ -375,7 +375,40 @@ $(document).ready(function(){
         ctx.lineTo(width/2-6,0.95*height-20);
         ctx.lineTo(width/2+6,0.95*height-20);
         ctx.fill();
-        
+
+
+        //draw mark in x direction from -5 to 5:
+         var startWidth = 0.05 * width + 25
+         var delta = 0.09 * width - 5;
+
+         var markerLength = 0.01 * height
+         for (var i = -5; i <= 5; i++) {
+             ctx.moveTo(startWidth, height/2);
+             ctx.textAlign="center";
+             if (i != 0)
+                ctx.fillText(i,startWidth, height/2 - 12)
+             ctx.lineTo(startWidth, height/2 - markerLength);
+             ctx.stroke();
+             console.log("here");
+             startWidth += delta;
+
+         }
+
+        // draw mark in y direction from -5 to 5"
+        var Heightdelta = 0.09 * height - 5;
+        var starHeight = 0.05 * height + 25
+        for (var i = -5; i <= 5; i++) {
+             ctx.moveTo(width/2, starHeight);
+             ctx.textAlign="center";
+             if (i != 0)
+                ctx.fillText(i, width /2  - 12, starHeight)
+             ctx.lineTo(width / 2 - markerLength, starHeight);
+             ctx.stroke();
+             starHeight += Heightdelta;
+
+         }
+
+
         function drawTemplate(ctx) {
             $.getJSON("/template/"+survey_id, function(result){
             // console.log(result)
