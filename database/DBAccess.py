@@ -15,6 +15,7 @@ def get_user_name(id):
     try:
         user = session.query(User).filter(User.user_id == id).one()
     except Exception as e:
+        print e;
         return None
     if user:
         return user.user_name
@@ -28,6 +29,7 @@ def get_skill_list(surveyID):
         listManager = session.query(Skill_List_Manager).filter(Skill_List_Manager.id == survey.skill_list_id).one()
         lists = session.query(Skill_Entry).filter(Skill_Entry.skill_list_id == listManager.id).all()
     except Exception as e:
+        print e;
         return None
     if lists:
         print("success")
@@ -42,6 +44,7 @@ def get_survey_id(key):
         survey = session.query(Survey).filter(Survey.survey_key == key).one()
         return survey.id
     except Exception as e:
+        print e;
         return None
 
 def get_survey_template(surveyId):
@@ -55,6 +58,7 @@ def get_survey_template(surveyId):
         return {"top": selectedtemplate.up, "bottom": selectedtemplate.down, "left": selectedtemplate.left, "right": selectedtemplate.right}
     except Exception as e:
         print("Can't access template")
+        print e;
         return None
 
 def checkSurveyIdExsist(survey_id):
@@ -62,6 +66,7 @@ def checkSurveyIdExsist(survey_id):
         survey = session.query(Survey).filter(Survey.id == survey_id).one()
         return True;
     except Exception as e:
+        print e;
         return False;
         
 def checkSurveyStatus(survey_id):
@@ -69,6 +74,7 @@ def checkSurveyStatus(survey_id):
         survey = session.query(Survey).filter(Survey.id == survey_id).one()
         return survey.isOpen
     except Exception as e:
+        print e;
         return None;
 
 def setCanvasData(user, survey, coor):
@@ -91,6 +97,7 @@ def getCanvasCoordinates(user_id, survey_id):
         currentData = session.query(Canvas).filter(and_(Canvas.user_id == user_id,Canvas.class_id == survey_id)).one()
         return currentData.coordinates
     except Exception as e:
+        print e;
         return None
 
 def getCanvasEntry(survey_id, user_id):
