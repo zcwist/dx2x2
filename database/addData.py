@@ -78,9 +78,16 @@ def createNewSurvey(skill_listID, templateID, surveyKey):
 
 
 if __name__ == "__main__":
+    template = session.query(AxisTemplate).filter(AxisTemplate.id == 1).one()
+    template.up = "Importance of design skilles I want to hone"
+    template.down = "Importance of design skills I don't want to hone"
+    template.left = "Proficiency in design skills I am limited in"
+    template.right = "Proficiency in design skills I have"
+
+    session.add(template)
+    session.commit()
     # Test the written functions
     # addUser("../Data/newUser.csv")
-    deleteUser("3032144246","kaiyue")
     # ##a demo created to test the database function
     # ###add user from the CVS to User table
     # user_list = get_user_list("../Data/user.csv")
