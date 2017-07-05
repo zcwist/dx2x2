@@ -36,7 +36,17 @@ def addUser(cvsaddress):
             session.rollback()
     print("successfully added Users")
     session.close()
-
+    
+def addOneUser(uid, firstName):
+    session = setConnection()
+    try:
+        user = User(user_id=uid, user_name=firstName)
+        session.add(user)
+        session.commit()
+    except Exception as e:
+        print e
+        print("User Name: {}, User Id: {}: Already exist".format(uid, firstName))
+    session.close()
 #delete user
 def deleteUser(user_id, user_name):
     session = setConnection()
@@ -95,7 +105,7 @@ def createNewSurvey(skill_listID, templateID, surveyKey):
     template = session.query(AxisTemplate).filter(AxisTemplate.id == templateID).one()
     newSurvey = Survey(survey_key= surveyKey, skill_list_manager=skill_listManager, axistemplate=template)
     session.add(newSurvey)
-    session.commit()
+    sessionwwwwa.commit()
     session.close()
 
 
