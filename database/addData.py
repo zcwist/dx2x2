@@ -105,7 +105,7 @@ def createNewSurvey(skill_listID, templateID, surveyKey):
     template = session.query(AxisTemplate).filter(AxisTemplate.id == templateID).one()
     newSurvey = Survey(survey_key= surveyKey, skill_list_manager=skill_listManager, axistemplate=template)
     session.add(newSurvey)
-    sessionwwwwa.commit()
+    session.commit()
     session.close()
 
 
@@ -113,7 +113,7 @@ def createNewSurvey(skill_listID, templateID, surveyKey):
 
 
 if __name__ == "__main__":
-    addOneUser("0103","0103")
+    # addOneUser("0103","0103")
     # deleteUser("0103","0103")
     # addUser("../Data/newUser.csv")
     # template = session.query(AxisTemplate).filter(AxisTemplate.id == 1).one()
