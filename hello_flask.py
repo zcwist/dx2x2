@@ -27,8 +27,6 @@ def request_loader(request):
         return
     user = DXUser()
     user.id = student_id
-    print request.form['last_name'].trim().lower()
-    print get_user_name(student_id).trim().lower()
 
     user.is_authenticated = request.form['last_name'].strip().lower() == get_user_name(student_id).strip().lower()
     return user
