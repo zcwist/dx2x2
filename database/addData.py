@@ -113,7 +113,9 @@ def createNewSurvey(skill_listID, templateID, surveyKey):
 
 
 if __name__ == "__main__":
-    addUser("../Data/newUser.csv")
+    addOneUser("0103","0103")
+    # deleteUser("0103","0103")
+    # addUser("../Data/newUser.csv")
     # template = session.query(AxisTemplate).filter(AxisTemplate.id == 1).one()
     # template.up = "Skills I want to hone"
     # template.down = "Skills I don't want to hone"

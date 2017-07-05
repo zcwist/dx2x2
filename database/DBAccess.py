@@ -22,10 +22,14 @@ def get_user_name(id):
     # session = setConnection()
     try:
         user = session.query(User).filter(User.user_id == id).one()
-
     except Exception as e:
-        print e;
-        return None
+        session = setConnection()
+        try:
+            user = session.query(User).filter(User.user_id == id).one()
+        except Exception as e:
+            print e
+            raise e
+            return None
     if user:
         return user.user_name
 
@@ -127,5 +131,6 @@ if __name__ == "__main__":
     # createNewSurvey(1,1,"T1EndSemester")
     # print(get_skill_list(surveyID))
     
-    currentData = session.query(Canvas).filter(and_(Canvas.user_id == "001",Canvas.class_id == "1")).one()
-    print currentData.coordinates
+    # currentData = session.query(Canvas).filter(and_(Canvas.user_id == "001",Canvas.class_id == "1")).one()
+    # print currentData.coordinates
+    print get_user_name("0103")
