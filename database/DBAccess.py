@@ -28,7 +28,6 @@ def get_user_name(id):
             user = session.query(User).filter(User.user_id == id).one()
         except Exception as e:
             print e
-            raise e
             return None
     if user:
         return user.user_name
