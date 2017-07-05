@@ -1,19 +1,28 @@
 from sqlalchemy import create_engine, and_
+from sqlalchemy.pool import NullPool
+
+from sqlalchemy.exc import DisconnectionError
 from sqlalchemy.orm import sessionmaker
 from DataBaseSetUp import User, Base, Survey,Skill_Entry,AxisTemplate,Canvas,Skill_List_Manager
 
 # engine = create_engine('sqlite:///OurDataBase.db')
 import config
-Str = config.getDBStr()
-engine = create_engine(Str)
+def setConnection():
+    Str = config.getDBStr()
+    engine = create_engine(Str, poolclass=NullPool)
 
-DBSession = sessionmaker(bind = engine)
+    DBSession = sessionmaker(bind = engine)
 
-session = DBSession()
+    session = DBSession()
+    return session
 
+
+session = setConnection()
 def get_user_name(id):
+    # session = setConnection()
     try:
         user = session.query(User).filter(User.user_id == id).one()
+
     except Exception as e:
         print e;
         return None
