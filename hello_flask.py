@@ -147,6 +147,9 @@ def showdemo():
     flask_login.login_user(user)
     # print("here")
     return flask.render_template('2x2.html', survey_id="1")
-    
+
+@app.route('/loaderio-03c01977e0b6a3cc4027801efa2d7407.txt')
+def showFiles():
+    return "loaderio-03c01977e0b6a3cc4027801efa2d7407"
 if __name__ == "__main__":
     app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
