@@ -28,7 +28,7 @@ def request_loader(request):
     user = DXUser()
     user.id = student_id
 
-    user.is_authenticated = request.form['last_name'] == get_user_name(student_id)
+    user.is_authenticated = request.form['last_name'].strip().lower() == get_user_name(student_id).strip().lower()
     return user
     
 @app.route('/', methods=['GET'])
@@ -44,7 +44,7 @@ def login():
     # print get_user_name(student_id)
     if not get_user_name(student_id):
         return "User doesn't exist"
-    if flask.request.form['last_name'] == get_user_name(student_id):
+    if flask.request.form['last_name'].strip().lower() == get_user_name(student_id).strip().lower():
         user = DXUser()
         user.id = student_id
         
