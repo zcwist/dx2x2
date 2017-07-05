@@ -9,7 +9,7 @@ from DataBaseSetUp import User, Base, Survey,Skill_Entry,AxisTemplate,Canvas,Ski
 import config
 def setConnection():
     Str = config.getDBStr()
-    engine = create_engine(Str, poolclass=NullPool)
+    engine = create_engine(Str)
 
     DBSession = sessionmaker(bind = engine)
 
