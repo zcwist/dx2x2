@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, and_
-from sqlalchemy.pool import NullPool
+from sqlalchemy.pool import QueuePool
 
 from sqlalchemy.exc import DisconnectionError
 from sqlalchemy.orm import sessionmaker
@@ -9,7 +9,7 @@ from DataBaseSetUp import User, Base, Survey,Skill_Entry,AxisTemplate,Canvas,Ski
 import config
 def setConnection():
     Str = config.getDBStr()
-    engine = create_engine(Str)
+    engine = create_engine(Str, poolclass=QueuePool)
 
     DBSession = sessionmaker(bind = engine)
 
@@ -19,16 +19,24 @@ def setConnection():
 
 session = setConnection()
 def get_user_name(id):
+    global session
     # session = setConnection()
     try:
         user = session.query(User).filter(User.user_id == id).one()
+        session.commit()
     except Exception as e:
+        print "not found 1"
+        print e
+        
         session = setConnection()
         try:
             user = session.query(User).filter(User.user_id == id).one()
+            session.commit()
         except Exception as e:
+            print "not found 2"
             print e
             return None
+            
     if user:
         return user.user_name
 
@@ -40,6 +48,7 @@ def get_skill_list(surveyID):
         survey = session.query(Survey).filter(Survey.id == surveyID).one()
         listManager = session.query(Skill_List_Manager).filter(Skill_List_Manager.id == survey.skill_list_id).one()
         lists = session.query(Skill_Entry).filter(Skill_Entry.skill_list_id == listManager.id).all()
+        session.commit()
     except Exception as e:
         print e;
         return None
@@ -54,6 +63,7 @@ def get_survey_id(key):
     """return a list of survey names.[{survey_key:"",survey_id:""}]"""
     try:
         survey = session.query(Survey).filter(Survey.survey_key == key).one()
+        session.commit()
         return survey.id
     except Exception as e:
         print e;
@@ -64,9 +74,9 @@ def get_survey_template(surveyId):
     return None if surveyID doesn't exist"""
     try:
         survey = session.query(Survey).filter(Survey.id == surveyId).one()
-        
         templateID = survey.template_id
         selectedtemplate = session.query(AxisTemplate).filter(AxisTemplate.id == templateID).one()
+        session.commit()
         return {"top": selectedtemplate.up, "bottom": selectedtemplate.down, "left": selectedtemplate.left, "right": selectedtemplate.right}
     except Exception as e:
         print("Can't access template")
@@ -76,6 +86,7 @@ def get_survey_template(surveyId):
 def checkSurveyIdExsist(survey_id):
     try:
         survey = session.query(Survey).filter(Survey.id == survey_id).one()
+        session.commit()
         return True;
     except Exception as e:
         print e;
@@ -84,6 +95,7 @@ def checkSurveyIdExsist(survey_id):
 def checkSurveyStatus(survey_id):
     try:
         survey = session.query(Survey).filter(Survey.id == survey_id).one()
+        session.commit()
         return survey.isOpen
     except Exception as e:
         print e;
@@ -107,6 +119,7 @@ def setCanvasData(user, survey, coor):
 def getCanvasCoordinates(user_id, survey_id):
     try:
         currentData = session.query(Canvas).filter(and_(Canvas.user_id == user_id,Canvas.class_id == survey_id)).one()
+        session.commit()
         return currentData.coordinates
     except Exception as e:
         print e;
