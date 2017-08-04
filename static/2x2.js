@@ -6,7 +6,7 @@ $(document).ready(function(){
     // }
     var survey_id = $("#survey_id").text();
 
-    var scale = 0.7;
+    var scale = 0.65;
     $("#canvasgrid").height(function(){
         return scale*$(document).height();
     });
