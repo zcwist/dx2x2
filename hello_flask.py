@@ -48,15 +48,15 @@ def login():
         user = DXUser()
         user.id = student_id
         
-        # survey_key = flask.request.form['survey_key']
-        # survey_id = get_survey_id(survey_key)
-        # if not survey_id:
-        #     flask.flash("Survey error")
-        #     return flask.redirect(flask.url_for('login')) 
+        survey_key = flask.request.form['survey_key']
+        survey_id = get_survey_id(survey_key)
+        if not survey_id:
+            flask.flash("Survey error")
+            return flask.redirect(flask.url_for('login')) 
         
         flask_login.login_user(user);
-        # return flask.redirect(flask.url_for('protected',survey_id=survey_id))
-        return flask.redirect(flask.url_for('compare', survey_id=2, pre_survey_id=1));
+        return flask.redirect(flask.url_for('protected',survey_id=survey_id))
+        # return flask.redirect(flask.url_for('compare', survey_id=2, pre_survey_id=1));
 
     flask.flash('Bad login')
     return flask.redirect(flask.url_for('login')) 
