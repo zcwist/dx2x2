@@ -10,36 +10,78 @@ server <- function(input, output,session) {
     }
     
     studentList = unique(studentList)
-    print(studentList)
+
     updateSelectInput(session,"names","Student",c(studentList))
   })
   
   
-  
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
+
   output$scatter <- renderPlotly({
     
-    filteredData = datafilter(input$surveyID,input$skills,input$names)
-    print(filteredData)
+    if (input$analysisType == "Survey analysis"){
+      filteredData = datafilter(input$surveyID,input$skills,input$names)
+      
+      if (input$colorby == "Student"){
+        colorby = paste(filteredData$uid)
+      }
+      else if (input$colorby == "Skill"){
+        colorby = filteredData$skill
+      }
+      
+      plot <- plot_ly(filteredData, x=~x,y=~y,color=colorby,
+                      type = "scatter", 
+                      mode="markers", 
+                      text=~paste("Student:",uid, "<br>SKill:",skill)) %>%
+        layout(
+          xaxis = list(range=c(-10,10)),
+          yaxis = list(range=c(-10,10))
+        )
+    }
     
-    plot_ly(x=filteredData$x,y=filteredData$y, type = "scatter", mode="markers")
+    else if (input$analysisType == "Difference analysis"){
+      filteredData = compare(input$surveyID,input$surveyID2,input$skills,input$names)
+      
+      if (input$colorby == "Student"){
+        colorby = paste(filteredData$uid)
+      }
+      else if (input$colorby == "Skill"){
+        colorby = filteredData$skill
+      }
+      
+      f = c(1,2)
+      p <- plot_ly(filteredData, x=~x,y=~y,color=colorby,
+                   frame=~survey_id,
+                   type="scatter",
+                   mode="markers")
+      # %>% 
+      #   animation_opts(
+      #     2000, easing = "elastic", redraw = FALSE
+      #   )
+      
+    }
+    
+    
   })
   
-  output$distPlot2 <- renderPlot({
+  output$distPlot <- renderPlotly({
+    if (input$analysisType == "Survey analysis"){
+      filteredData = datafilter(input$surveyID,input$skills,input$names)
+      
+      plot_ly(filteredData,type="histogram2dcontour",x=~x,y=~y,colors = "Blues") 
+      
+      
+    }
     
-    x    <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    else if (input$analysisType == "Difference analysis"){
+      filteredData = mergedata(input$surveyID,input$surveyID2,input$skills,input$names)
+      plot_ly(alpha=0.6) %>%
+      add_histogram(x=filteredData$x.y-filteredData$x.x,name="Proficiency") %>% 
+      add_histogram(x=filteredData$y.y-filteredData$y.x,name="Interest") %>%
+      layout(barmode="overlay")
+      
+    }
     
-    hist(x, breaks = bins, col = "#75AADB", border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
+    
     
   })
   

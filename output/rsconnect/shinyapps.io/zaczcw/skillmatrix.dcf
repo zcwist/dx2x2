@@ -1,0 +1,13 @@
+name: skillmatrix
+title: SkillMatrix
+username:
+account: zaczcw
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 209378
+bundleId: 961621
+url: https://zaczcw.shinyapps.io/skillmatrix/
+when: 1504162488.07994
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|app.R|csvformat.py|s_1 copy.csv|s_2 copy.csv|visualization.R|x_2.csv|x_summary1.csv|x_summary2.csv|y_1.csv|y_2.csv|y_summary1.csv|y_summary2.csv

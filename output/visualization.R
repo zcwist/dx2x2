@@ -1,10 +1,10 @@
 import <- function(){
   setwd("~/Code/python/dx/dx2x2/output")
   library(readr)
-  x_summary1 <<- read_csv("~/Code/python/dx/dx2x2/output/x_summary1.csv")
-  x_summary2 <<- read_csv("~/Code/python/dx/dx2x2/output/x_summary2.csv")
-  y_summary1 <<- read_csv("~/Code/python/dx/dx2x2/output/y_summary1.csv")
-  y_summary2 <<- read_csv("~/Code/python/dx/dx2x2/output/y_summary2.csv")
+  x_summary1 <<- read_csv("x_summary1.csv")
+  x_summary2 <<- read_csv("x_summary2.csv")
+  y_summary1 <<- read_csv("y_summary1.csv")
+  y_summary2 <<- read_csv("y_summary2.csv")
   
   df <<- data.frame(index = 1:34, 
                    meanx = apply(x_summary1[2:35],2,mean,na.rm=TRUE),

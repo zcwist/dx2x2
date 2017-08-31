@@ -8,7 +8,7 @@ source("filter.R")
 # y1 <- read.csv("y_1.csv")
 # y2 <- read.csv("y_2.csv")
 
-template <- read.csv("template.csv")
+template <- read.csv("template.csv",head=T,check.names=FALSE)
 
 skills <- colnames(template)[2:length(colnames(template))]
 

@@ -10,34 +10,39 @@ ui <- fluidPage(
            selectInput("analysisType", "Analysis Type",
                        c("Survey analysis",
                          "Difference analysis")),
+           radioButtons("colorby","Show colors in", choices=c("Skill","Student"),selected="Skill")
            
+           
+    ),
+    column(4,
            #select survey
            selectInput("surveyID", "Survey no.",
-                       c(1,2),multiple = TRUE,selected = 1)
+                       c(1,2),multiple = F,selected = 1),
+           
+           conditionalPanel(
+             condition = "input.analysisType == 'Difference analysis'",
+             #select survey
+             selectInput("surveyID2", "Survey2 no.",
+                         c(1,2),multiple = F,selected = 2)
+           )
+           
     ),
     column(4,
            selectInput("skills","Skills",
-                       c("ALL",skills))
-    ),
-    column(4,
+                       c("ALL",skills)),
            selectInput("names","All Students",
-                       c("All students")),
+                       c("All students"))
            
-           sliderInput(inputId = "bins",
-                       label = "Number of bins:",
-                       min = 1,
-                       max = 50,
-                       value = 30)
     )
     
   ),
   
   fluidRow(
-    column(6,
+    column(8,
            plotlyOutput("scatter")
     ),
-    column(6,
-           plotOutput(outputId = "distPlot2")
+    column(4,
+           plotlyOutput("distPlot")
     )
   )
   
