@@ -29,6 +29,7 @@ server <- function(input, output,session) {
       }
       
       plot <- plot_ly(filteredData, x=~x,y=~y,color=colorby,
+                      # height = 720,
                       type = "scatter", 
                       mode="markers", 
                       text=~paste("Student:",uid, "<br>SKill:",skill)) %>%

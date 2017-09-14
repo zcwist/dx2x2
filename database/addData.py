@@ -114,8 +114,8 @@ def createNewSurvey(skill_listID, templateID, surveyKey):
 
 if __name__ == "__main__":
     # pass
-    addOneUser("1563394","Samuel")
-    addOneUser("1571175","Sina")
+    addOneUser("1571850","Olabode")
+    # addOneUser("1571175","Sina")
     # deleteUser("1557014","wei shen zui diao")
     # deleteUser("11111111","jk")
     # deleteUser("1123", "1") 

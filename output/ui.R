@@ -17,7 +17,7 @@ ui <- fluidPage(
     column(4,
            #select survey
            selectInput("surveyID", "Survey no.",
-                       c(1,2),multiple = F,selected = 1),
+                       c(1,2,3),multiple = F,selected = 3),
            
            conditionalPanel(
              condition = "input.analysisType == 'Difference analysis'",

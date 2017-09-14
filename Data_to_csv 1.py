@@ -101,5 +101,5 @@ def Summary(survey, name):
             writer.writerow(row)
 
 ##Test run For the demo,  the survey ID we used is 1.
-Summary(1, "firstTime")
-Summary(2, "secondTime")
+Summary(1, "0904")
+# Summary(2, "09042")
