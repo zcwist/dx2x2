@@ -55,8 +55,10 @@ def login():
             return flask.redirect(flask.url_for('login')) 
         
         flask_login.login_user(user);
-        return flask.redirect(flask.url_for('protected',survey_id=survey_id))
-        # return flask.redirect(flask.url_for('compare', survey_id=2, pre_survey_id=1));
+        if survey_id == 1:
+            return flask.redirect(flask.url_for('protected',survey_id=survey_id))
+        if survey_id > 1:
+            return flask.redirect(flask.url_for('compare', survey_id=survey_id, pre_survey_id=survey_id-1));
 
     flask.flash('Bad login')
     return flask.redirect(flask.url_for('login')) 
