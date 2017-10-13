@@ -5,7 +5,7 @@ server <- function(input, output,session) {
     surveyID = input$surveyID
     studentList = c("All Students")
     for (id in surveyID){
-      file = read.csv(paste("x_",toString(id),".csv",sep=""))
+      file = read.csv(paste("x_292C_",toString(id),".csv",sep=""))
       studentList = c(studentList,file$Name)
     }
     

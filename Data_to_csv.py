@@ -17,7 +17,7 @@ session = DBSession()
 
 
 
-def Summary(survey):
+def Summary(survey, version):
     xrowList = []
     yrowList = []
     ColumnNameList = ["Name"] # First column in the output csv is "Name"
@@ -37,6 +37,7 @@ def Summary(survey):
     for data in CanvasData:
         print("You are currently using data from user:" + data.user_id)
         cur_user_name = get_user_name(data.user_id)
+        cur_user_name = data.user_id
         user_list.append(cur_user_name)
         xcurRow = {"Name":cur_user_name} #add to x eachRow
         ycurRow = {"Name":cur_user_name} #add to x eachRow
@@ -76,7 +77,7 @@ def Summary(survey):
         xrowList.append(xcurRow)
         yrowList.append(ycurRow)
 
-    with open('x_summary.csv', 'w') as csvfile:
+    with open('x_summary_'+version+'.csv', 'w') as csvfile:
         fieldnames = ColumnNameList
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -84,7 +85,7 @@ def Summary(survey):
         for row in xrowList:
             writer.writerow(row)
 
-    with open('y_summary.csv', 'w') as csvfile:
+    with open('y_summary_'+version+'.csv', 'w') as csvfile:
         fieldnames = ColumnNameList
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -93,4 +94,4 @@ def Summary(survey):
             writer.writerow(row)
 
 ##Test run For the demo,  the survey ID we used is 1.
-Summary(1)
+Summary(2, '1013')

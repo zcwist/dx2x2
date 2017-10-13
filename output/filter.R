@@ -1,6 +1,6 @@
 
 datafilter <- function(surveyID, skillname, studentuid){
-  csv = read.csv(file=paste("s_",surveyID,".csv",sep=""),header=TRUE)
+  csv = read.csv(file=paste("292C",surveyID,".csv",sep=""),header=TRUE)
   filteredcsv = csv
   if (skillname != "ALL"){
     filteredcsv = subset(filteredcsv, skill==skillname)
@@ -15,9 +15,9 @@ datafilter <- function(surveyID, skillname, studentuid){
 }
 
 compare <- function(surveyID,survey2ID, skillname, studentuid){
-  csv = read.csv(file=paste("s_",surveyID,".csv",sep=""),header=TRUE)
+  csv = read.csv(file=paste("292C",surveyID,".csv",sep=""),header=TRUE)
   csv = cbind(csv,survey_id=surveyID)
-  csv2 = read.csv(file=paste("s_",survey2ID,".csv",sep=""),header=TRUE)
+  csv2 = read.csv(file=paste("292C",survey2ID,".csv",sep=""),header=TRUE)
   csv2 = cbind(csv2,survey_id=survey2ID)
   
   # filteredcsv = merge(csv,csv2,by=c("uid","skill"))
@@ -35,8 +35,8 @@ compare <- function(surveyID,survey2ID, skillname, studentuid){
 
 mergedata <-  function(surveyID,survey2ID, skillname, studentuid){
   
-  csv = read.csv(file=paste("s_",surveyID,".csv",sep=""),header=TRUE)
-  csv2 = read.csv(file=paste("s_",survey2ID,".csv",sep=""),header=TRUE)
+  csv = read.csv(file=paste("292C",surveyID,".csv",sep=""),header=TRUE)
+  csv2 = read.csv(file=paste("292C",survey2ID,".csv",sep=""),header=TRUE)
   
   filteredcsv = merge(csv,csv2,by=c("uid","skill"))
   
