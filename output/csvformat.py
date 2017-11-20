@@ -30,6 +30,6 @@ def mergeCSV(file1,file2,file):
 
 
 if __name__ == '__main__':
-	mergeCSV("x_summary_1013.csv","y_summary_1013.csv","292C2.csv")
+	mergeCSV("292C/x_summary_4.csv","292C/y_summary_4.csv","292C4.csv")
 
 

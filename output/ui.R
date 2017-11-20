@@ -17,13 +17,13 @@ ui <- fluidPage(
     column(4,
            #select survey
            selectInput("surveyID", "Survey no.",
-                       c(1,2),multiple = F,selected = 1),
+                       c(1,2,3,4),multiple = F,selected = 1),
            
            conditionalPanel(
              condition = "input.analysisType == 'Difference analysis'",
              #select survey
              selectInput("surveyID2", "Survey2 no.",
-                         c(1,2),multiple = F,selected = 2)
+                         c(1,2,3,4),multiple = F,selected = 2)
            )
            
     ),
