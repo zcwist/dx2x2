@@ -1,8 +1,4 @@
-.config
-.DS_Store
-database/*.pyc
-.~c9**
-*.pyc
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
