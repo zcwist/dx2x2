@@ -2,12 +2,12 @@ import os
 import flask
 from database.DBAccess import *
 
-app = flask.Flask(__name__)
-app.secret_key ="design exchange"
+application = flask.Flask(__name__)
+application.secret_key = "design exchange"
 
 import flask_login
 login_manager = flask_login.LoginManager()
-login_manager.init_app(app)
+login_manager.init_app(application)
 
 class DXUser(flask_login.UserMixin):
     pass
@@ -31,11 +31,11 @@ def request_loader(request):
     user.is_authenticated = request.form['last_name'].strip().lower() == get_user_name(student_id).strip().lower()
     return user
     
-@app.route('/', methods=['GET'])
+@application.route('/', methods=['GET'])
 def index():
     return flask.redirect(flask.url_for('login'))
 
-@app.route('/login', methods=['GET', 'POST'])
+@application.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
         return flask.render_template('sign_in.html')
@@ -63,12 +63,12 @@ def login():
     flask.flash('Bad login')
     return flask.redirect(flask.url_for('login')) 
 
-@app.route('/compare/<survey_id>/<pre_survey_id>')
+@application.route('/compare/<survey_id>/<pre_survey_id>')
 @flask_login.login_required
 def compare(survey_id,pre_survey_id):
     return flask.render_template('compare2x2.html', survey_id=survey_id, pre_survey_id=pre_survey_id);
 
-@app.route('/protected/<survey_id>')
+@application.route('/protected/<survey_id>')
 @flask_login.login_required
 def protected(survey_id):
     #Judge the class status before everything
@@ -86,20 +86,20 @@ def protected(survey_id):
 
     return flask.render_template('2x2.html',survey_id=survey_id)
     
-@app.route('/skills/<survey_id>')
+@application.route('/skills/<survey_id>')
 def getskills(survey_id):
     skills = get_skill_list(survey_id)
     return flask.jsonify(skills)
-@app.route('/template/<survey_id>')
+@application.route('/template/<survey_id>')
 def gettemplate(survey_id):
     template = get_survey_template(survey_id)
     return flask.jsonify(template)
-@app.route('/logout')
+@application.route('/logout')
 def logout():
     flask_login.logout_user()
     return flask.redirect(flask.url_for('login'))
 
-@app.route('/userinfo')
+@application.route('/userinfo')
 @flask_login.login_required
 def get_user_info():
     return flask.jsonify(flask_login.current_user.id);
@@ -109,7 +109,7 @@ def unauthorized_handler():
     flask.flash("Unauthorized")
     return flask.redirect(flask.url_for('login'))
 
-@app.route('/kaiyue/test',methods=['GET','POST'])
+@application.route('/kaiyue/test', methods=['GET', 'POST'])
 def getDataFromSubmit():
     if flask.request.method == 'GET':
         return flask.render_template('test.html')
@@ -128,7 +128,7 @@ def getDataFromSubmit():
     
     return flask.json.dumps({'success':True}), 200, {'ContentType':'application/json'}
     
-@app.route('/loadcanvas',methods=['POST'])
+@application.route('/loadcanvas', methods=['POST'])
 def loadcanvas():
     survey_info = flask.request.json['survey_info']
     user_id = survey_info["user_id"]
@@ -143,7 +143,7 @@ def loadcanvas():
         return flask.jsonify(surveyed=True, canvas_data=canvas_data)
         
 
-@app.route('/demo')
+@application.route('/demo')
 def showdemo():
     user = DXUser()
     user.id = "002"
@@ -151,8 +151,9 @@ def showdemo():
     # print("here")
     return flask.render_template('2x2.html', survey_id="1")
 
-@app.route('/loaderio-03c01977e0b6a3cc4027801efa2d7407.txt')
+@application.route('/loaderio-03c01977e0b6a3cc4027801efa2d7407.txt')
 def showFiles():
     return "loaderio-03c01977e0b6a3cc4027801efa2d7407"
 if __name__ == "__main__":
-    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)))
+    application.debug = True
+    application.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8001)))
